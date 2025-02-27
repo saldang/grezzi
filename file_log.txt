@@ -51,3 +51,10 @@ File: daPulire/Steak House Varese.xlsx, Righe: 716, Righe Pulite: 676
 File: daPulire/Steak House Varese.xlsx, Righe: 716, Righe Pulite: 676
 File: daPulire/Steak House Vercelli.xlsx, Righe: 302, Righe Pulite: 280
 File: daPulire/Steak House Viterbo.xlsx, Righe: 1155, Righe Pulite: 1119
+File: daPulire/Steak House Varese.xlsx, Righe: 716, Righe Pulite: 676
+File: daPulire/Steak House Vicenza.xlsx, Righe: 2122, Righe Pulite: 2004
+File: daPulire/Steak House Viterbo.xlsx, Righe: 1155, Righe Pulite: 1119
+File: daPulire/Steak House Vicenza.xlsx, Righe: 2122, Righe Pulite: 2004
+File: daPulire/Steak House Viterbo.xlsx, Righe: 1155, Righe Pulite: 1119
+File: daPulire/Steak House Vicenza.xlsx, Righe: 2122, Righe Pulite: 2004
+File: daPulire/Steak House Viterbo.xlsx, Righe: 1155, Righe Pulite: 1119

@@ -6,6 +6,7 @@ import os
 import subprocess
 from pathlib import Path
 from threading import Thread
+import asyncio
 from jinja2 import Environment, FileSystemLoader
 import logging
 
@@ -32,23 +33,42 @@ Path(OUTPUT_RAW_FOLDER).mkdir(exist_ok=True)
 env = Environment(loader=FileSystemLoader("templates"))
 
 
-def execute_script_in_background(filename):
-    """Esegue lo script in background"""
+# Lista di connessioni WebSocket attive
+active_connections = set()
+
+
+async def notify_clients():
+    """Invia un messaggio a tutti i client connessi per ricaricare la pagina"""
+    for websocket in active_connections:
+        try:
+            await websocket.send_json({"event": "task_completed"})
+        except:
+            pass  # Ignora eventuali errori
+
+
+def execute_script_in_background():
+    """Esegue lo script e notifica i client WebSocket al termine"""
     try:
-        # Assumendo che il tuo script si chiami 'script.py'
         script_path = os.path.join(os.getcwd(), "clean.py")
         if os.path.exists(script_path):
-            # Avvia il processo in background
-            subprocess.Popen(["python", script_path, filename])
-            sio.emit("task_completed", {"filename": filename})
-
+            subprocess.run(["python", script_path])  # Esegui lo script
+        asyncio.run(notify_clients())  # Notifica i client WebSocket
     except Exception as e:
-        print(f"Errore nell'avvio dello script: {str(e)}")
+        print(f"Errore nell'esecuzione dello script: {str(e)}")
 
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    await sio.handle_request(websocket)
+    """Gestisce le connessioni WebSocket"""
+    await websocket.accept()
+    active_connections.add(websocket)
+    try:
+        while True:
+            await websocket.receive_text()  # Mantiene la connessione aperta
+    except:
+        pass
+    finally:
+        active_connections.remove(websocket)
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -71,12 +91,10 @@ async def upload_files(files: List[UploadFile] = File(...)):
             logging.info(f"File {file.filename} saved successfully")
 
         # Avvia lo script in background
-        Thread(
-            target=execute_script_in_background, args=(file.filename,), daemon=True
-        ).start()
+        Thread(target=execute_script_in_background, daemon=True).start()
         # Redirect alla pagina che mostra l'elenco dei file
         logging.info("Redirecting to /list_files")
-        return {"status": "completed", "redirect": "/list_files"}
+        return {"status": "processing", "redirect": "/list_files"}
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Errore durante il caricamento: {str(e)}"

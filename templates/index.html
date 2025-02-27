@@ -10,12 +10,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const socket = io("ws://localhost:8000/ws");
+            const socket = new WebSocket("ws://localhost:8000/ws");
 
-            socket.on("task_completed", (data) => {
-                console.log("Task completed for file:", data.filename);
-                location.reload();
-            });
+            socket.onopen = () => console.log("WebSocket connessa!");
+
+            socket.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                if (data.event === "task_completed") {
+                    console.log("Elaborazione completata, ricarico la pagina...");
+                    location.reload();
+                }
+            };
+
+            socket.onerror = (error) => console.error("Errore WebSocket:", error);
+            socket.onclose = () => console.log("WebSocket chiusa");
         });
     </script>
     <style>
