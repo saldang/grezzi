@@ -8,7 +8,8 @@ wheels/
 
 # Virtual environments
 .venv
-
+daPulire
+puliti
 output_csv
 output_raw_csv
 *.xlsx

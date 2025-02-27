@@ -1,0 +1,9 @@
+File: daPulire/Pizzerie Vicenza.xlsx, Righe: 671, Righe Pulite: 624
+File: daPulire/Pizzerie Vicenza.xlsx, Righe: 671, Righe Pulite: 624
+File: daPulire/Pizzerie Brindisi.xlsx, Righe: 93, Righe Pulite: 87
+File: daPulire/Pizzerie Modena.xlsx, Righe: 752, Righe Pulite: 716
+File: daPulire/Pizzerie Macerata.xlsx, Righe: 344, Righe Pulite: 328
+File: daPulire/Pizzerie Crotone.xlsx, Righe: 25, Righe Pulite: 25
+File: daPulire/Pizzerie Reggio Calabria.xlsx, Righe: 226, Righe Pulite: 206
+File: daPulire/Pizzerie Venezia.xlsx, Righe: 385, Righe Pulite: 362
+File: daPulire/Pizzerie Monza.xlsx, Righe: 459, Righe Pulite: 424
