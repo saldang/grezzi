@@ -7,3 +7,47 @@ File: daPulire/Pizzerie Crotone.xlsx, Righe: 25, Righe Pulite: 25
 File: daPulire/Pizzerie Reggio Calabria.xlsx, Righe: 226, Righe Pulite: 206
 File: daPulire/Pizzerie Venezia.xlsx, Righe: 385, Righe Pulite: 362
 File: daPulire/Pizzerie Monza.xlsx, Righe: 459, Righe Pulite: 424
+File: daPulire/Steak House Viterbo.xlsx, Righe: 1155, Righe Pulite: 1119
+File: daPulire/Steak House Vibo Valentia.xlsx, Righe: 204, Righe Pulite: 193
+File: daPulire/Steak House Viterbo.xlsx, Righe: 1155, Righe Pulite: 1119
+File: daPulire/Steak House Verona.xlsx, Righe: 697, Righe Pulite: 641
+File: daPulire/Steak House Vibo Valentia.xlsx, Righe: 204, Righe Pulite: 193
+File: daPulire/Steak House Vibo Valentia.xlsx, Righe: 204, Righe Pulite: 193
+File: daPulire/Steak House Udine.xlsx, Righe: 615, Righe Pulite: 575
+File: daPulire/Steak House Udine.xlsx, Righe: 615, Righe Pulite: 575
+File: daPulire/Steak House Vicenza.xlsx, Righe: 2122, Righe Pulite: 2004
+File: daPulire/Steak House Vicenza.xlsx, Righe: 2122, Righe Pulite: 2004
+File: daPulire/Steak House Viterbo.xlsx, Righe: 1155, Righe Pulite: 1119
+File: daPulire/Steak House Viterbo.xlsx, Righe: 1155, Righe Pulite: 1119
+File: daPulire/Steak House Vibo Valentia.xlsx, Righe: 204, Righe Pulite: 193
+File: daPulire/Steak House Varese.xlsx, Righe: 716, Righe Pulite: 676
+File: daPulire/Steak House Varese.xlsx, Righe: 716, Righe Pulite: 676
+File: daPulire/Steak House Udine.xlsx, Righe: 615, Righe Pulite: 575
+File: daPulire/Steak House Verona.xlsx, Righe: 697, Righe Pulite: 641
+File: daPulire/Steak House Verona.xlsx, Righe: 697, Righe Pulite: 641
+File: daPulire/Steak House Vicenza.xlsx, Righe: 2122, Righe Pulite: 2004
+File: daPulire/Steak House Nuoro.xlsx, Righe: 837, Righe Pulite: 826
+File: daPulire/Steak House Viterbo.xlsx, Righe: 1155, Righe Pulite: 1119
+File: daPulire/Steak House Varese.xlsx, Righe: 716, Righe Pulite: 676
+File: daPulire/Steak House Verona.xlsx, Righe: 697, Righe Pulite: 641
+File: daPulire/Steak House Oristano.xlsx, Righe: 118, Righe Pulite: 112
+File: daPulire/Steak House Vibo Valentia.xlsx, Righe: 204, Righe Pulite: 193
+File: daPulire/Steak House Udine.xlsx, Righe: 615, Righe Pulite: 575
+File: daPulire/Steak House Vicenza.xlsx, Righe: 2122, Righe Pulite: 2004
+File: daPulire/Steak House Viterbo.xlsx, Righe: 1155, Righe Pulite: 1119
+File: daPulire/Steak House Viterbo.xlsx, Righe: 1155, Righe Pulite: 1119
+File: daPulire/Steak House Vercelli.xlsx, Righe: 302, Righe Pulite: 280
+File: daPulire/Steak House Viterbo.xlsx, Righe: 1155, Righe Pulite: 1119
+File: daPulire/Steak House Vercelli.xlsx, Righe: 302, Righe Pulite: 280
+File: daPulire/Steak House Viterbo.xlsx, Righe: 1155, Righe Pulite: 1119
+File: daPulire/Steak House Vercelli.xlsx, Righe: 302, Righe Pulite: 280
+File: daPulire/Steak House Udine.xlsx, Righe: 615, Righe Pulite: 575
+File: daPulire/Steak House Viterbo.xlsx, Righe: 1155, Righe Pulite: 1119
+File: daPulire/Steak House Vercelli.xlsx, Righe: 302, Righe Pulite: 280
+File: daPulire/Steak House Udine.xlsx, Righe: 615, Righe Pulite: 575
+File: daPulire/Steak House Viterbo.xlsx, Righe: 1155, Righe Pulite: 1119
+File: daPulire/Steak House Varese.xlsx, Righe: 716, Righe Pulite: 676
+File: daPulire/Steak House Varese.xlsx, Righe: 716, Righe Pulite: 676
+File: daPulire/Steak House Varese.xlsx, Righe: 716, Righe Pulite: 676
+File: daPulire/Steak House Vercelli.xlsx, Righe: 302, Righe Pulite: 280
+File: daPulire/Steak House Viterbo.xlsx, Righe: 1155, Righe Pulite: 1119

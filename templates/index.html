@@ -1,0 +1,173 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload File</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const socket = io("ws://localhost:8000/ws");
+
+            socket.on("task_completed", (data) => {
+                console.log("Task completed for file:", data.filename);
+                location.reload();
+            });
+        });
+    </script>
+    <style>
+        .upload-zone {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 20px 0;
+            cursor: pointer;
+            min-height: 150px;
+        }
+
+        .upload-zone.dragover {
+            background-color: #f0f0f0;
+            border-color: #666;
+        }
+
+        .file-list {
+            text-align: left;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .file-item {
+            padding: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Spinner di loading */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Carica File</h1>
+
+        <div class="upload-zone" id="dropZone">
+            <input type="file" id="fileInput" multiple style="display: none">
+            <i class="fa-solid fa-cloud-upload-alt fa-4x mb-3"></i>
+            <p class="lead">Trascina i file qui o clicca per selezionare</p>
+            <p class="text-muted">Supporta caricamento multiplo</p>
+            <div id="fileList" class="file-list"></div>
+        </div>
+
+        <button id="uploadButton" class="btn btn-primary mt-3" disabled>Carica File</button>
+        <button id="listFilesButton" class="btn btn-secondary mt-3" onclick="window.location.href='/list_files'">Vai
+            alla lista dei file</button>
+
+
+    </div>
+
+    <!-- Spinner di loading -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div>
+            <i class="fa-solid fa-spinner fa-spin"></i> Caricamento in corso...
+        </div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        const uploadButton = document.getElementById('uploadButton');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        // Evento per apertura selezione file al click sulla zona
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        // Evento cambio file input
+        fileInput.addEventListener('change', () => updateFileList());
+
+        // Drag & Drop events
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            fileInput.files = e.dataTransfer.files; // Assegna direttamente i file al file input
+            updateFileList();
+        });
+
+        function updateFileList() {
+            if (fileInput.files.length > 0) {
+                fileList.innerHTML = Array.from(fileInput.files)
+                    .map(file => `<div class="file-item">${file.name}</div>`)
+                    .join('');
+                uploadButton.disabled = false;
+            } else {
+                fileList.innerHTML = '<p class="text-muted">Nessun file selezionato</p>';
+                uploadButton.disabled = true;
+            }
+        }
+
+        async function uploadFiles() {
+            if (fileInput.files.length === 0) return;
+
+            // Mostra il loading overlay
+            loadingOverlay.style.display = 'flex';
+
+            const formData = new FormData();
+            for (let file of fileInput.files) {
+                formData.append('files', file);
+            }
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error('Errore durante il caricamento');
+
+                const finalResponse = await response.json();
+
+                // Dopo il caricamento, nasconde il loading e fa il redirect
+                if (finalResponse.redirect) {
+                    window.location.href = finalResponse.redirect;
+                }
+            } catch (error) {
+                console.error('Errore:', error);
+                alert('Errore durante il caricamento dei file');
+            } finally {
+                // Assicura che il loading si nasconda in caso di errore
+                loadingOverlay.style.display = 'none';
+            }
+        }
+
+        uploadButton.addEventListener('click', uploadFiles);
+    </script>
+</body>
+
+</html>
