@@ -9,6 +9,7 @@ COPY . /app
 # Install the application dependencies.
 WORKDIR /app
 RUN uv sync --frozen --no-cache
-
+# Expose the application port.
+EXPOSE 8000
 # Run the application.
-CMD ["/app/.venv/bin/fastapi", "run", "app/main.py", "--port", "5000", "--host", "0.0.0.0"]
+CMD ["/app/.venv/bin/fastapi", "dev", "--host", "0.0.0.0", "--port", "8000"]
