@@ -3,7 +3,6 @@ version: "3.8"
 services:
   web:
     build: .
-    command: /app/.venv/bin/fastapi
     ports:
       - "8000:8000"
     volumes:
