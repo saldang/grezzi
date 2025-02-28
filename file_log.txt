@@ -58,3 +58,7 @@ File: daPulire/Steak House Vicenza.xlsx, Righe: 2122, Righe Pulite: 2004
 File: daPulire/Steak House Viterbo.xlsx, Righe: 1155, Righe Pulite: 1119
 File: daPulire/Steak House Vicenza.xlsx, Righe: 2122, Righe Pulite: 2004
 File: daPulire/Steak House Viterbo.xlsx, Righe: 1155, Righe Pulite: 1119
+File: daPulire/Osterie e Trattorie Aosta.xlsx, Righe: 0, Righe Pulite: 0
+File: daPulire/Osterie e Trattorie Agrigento.xlsx, Righe: 0, Righe Pulite: 0
+File: daPulire/Osterie e Trattorie Agrigento.xlsx, Righe: 0, Righe Pulite: 0
+File: daPulire/Osterie e Trattorie Agrigento.xlsx, Righe: 0, Righe Pulite: 0

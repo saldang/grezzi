@@ -257,7 +257,7 @@ if __name__ == "__main__":
     NODODB_URL = "http://nocodb:8080"
 
     # Inserimento all_df in nocodb
-    url = NODODB_URL + "api/v2/tables/mex84cdgllvh8jn/records"
+    url = NODODB_URL + "/api/v2/tables/mex84cdgllvh8jn/records"
 
     headers = {
         "Content-Type": "application/json",
