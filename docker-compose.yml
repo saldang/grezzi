@@ -8,3 +8,8 @@ services:
     volumes:
       - .:/app
     restart: always
+    networks:
+      - 2_pg_network
+
+networks:
+  2_pg_network:
