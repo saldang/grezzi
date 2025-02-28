@@ -3,6 +3,8 @@ import re
 import socket
 import glob
 import os
+import requests
+import json
 from datetime import datetime
 
 
@@ -251,3 +253,18 @@ if __name__ == "__main__":
     filename = "puliti/all_data" + datetime.now().strftime("%Y%m%d%H%M%S") + ".csv"
     all_df.to_csv(filename, index=False)
 
+    # Salvataggio in nocodb
+    NODODB_URL = "http://localhost:8080"
+
+    # Inserimento all_df in nocodb
+    url = NODODB_URL + "api/v2/tables/mex84cdgllvh8jn/records" 
+
+    headers = {
+        "Content-Type": "application/json",
+        "xc-token":"JoWC9H4SzcwaaPKIgR6jtTI8b3cG93xkKW8zeTTJ",
+    }
+
+    data = all_df.to_dict(orient="records")
+    response = requests.post(url, headers=headers, json=data)
+    print(response.json())
+    print(f"File salvato in nocodb: {filename}")
