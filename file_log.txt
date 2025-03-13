@@ -62,3 +62,4 @@ File: daPulire/Osterie e Trattorie Aosta.xlsx, Righe: 0, Righe Pulite: 0
 File: daPulire/Osterie e Trattorie Agrigento.xlsx, Righe: 0, Righe Pulite: 0
 File: daPulire/Osterie e Trattorie Agrigento.xlsx, Righe: 0, Righe Pulite: 0
 File: daPulire/Osterie e Trattorie Agrigento.xlsx, Righe: 0, Righe Pulite: 0
+File: daPulire/Ascoli Piceno Ristorante.xlsx, Righe: 260, Righe Pulite: 244

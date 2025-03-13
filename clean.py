@@ -61,6 +61,12 @@ def extract_domain(url):
         else:
             return url
 
+def remove_province(city):
+    """Rimuove la provincia dalla città."""
+    try:
+        return re.sub(r"\b[A-Z]{2}\b", "", city).strip()
+    except Exception as e:
+        return city
 
 def split_city_cap(df):
     """Separa la città dal CAP."""
@@ -73,9 +79,7 @@ def split_city_cap(df):
         df["Province"] = pd.StringDtype()
         df["Province"] = df["City"].str.extract(r"\b([A-Z]{2})\b")
         df["Province"] = df["Province"].str.strip()
-        df["City"] = df["City"].apply(
-            lambda x: re.sub(r"\s*\(.*?\)\s*|\b[A-Z]{2}\b", "", x).strip()
-        )
+        df["City"] = df["City"].apply(remove_province)
 
     return df
 

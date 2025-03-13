@@ -14,3 +14,4 @@ output_csv
 output_raw_csv
 *.xlsx
 
+*.lock
