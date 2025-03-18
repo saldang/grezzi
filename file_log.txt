@@ -63,3 +63,200 @@ File: daPulire/Osterie e Trattorie Agrigento.xlsx, Righe: 0, Righe Pulite: 0
 File: daPulire/Osterie e Trattorie Agrigento.xlsx, Righe: 0, Righe Pulite: 0
 File: daPulire/Osterie e Trattorie Agrigento.xlsx, Righe: 0, Righe Pulite: 0
 File: daPulire/Ascoli Piceno Ristorante.xlsx, Righe: 260, Righe Pulite: 244
+File: daPulire/Ancona Ristorante.xlsx, Righe: 361, Righe Pulite: 342
+File: daPulire/Agrigento Ristorante.xlsx, Righe: 288, Righe Pulite: 267
+File: daPulire/Alessandria Ristorante.xlsx, Righe: 1329, Righe Pulite: 1268
+File: daPulire/Agrigento Ristorante.xlsx, Righe: 288, Righe Pulite: 267
+File: daPulire/Frosinone Ristorante.xlsx, Righe: 1026, Righe Pulite: 977
+File: daPulire/Ancona Ristorante.xlsx, Righe: 361, Righe Pulite: 342
+File: daPulire/Verbania Ristorante.xlsx, Righe: 1109, Righe Pulite: 1045
+File: daPulire/Siena Ristorante.xlsx, Righe: 1358, Righe Pulite: 1296
+File: daPulire/Agrigento Ristorante.xlsx, Righe: 288, Righe Pulite: 267
+File: daPulire/Fermo Ristorante.xlsx, Righe: 188, Righe Pulite: 181
+File: daPulire/Catanzaro Ristorante.xlsx, Righe: 563, Righe Pulite: 533
+File: daPulire/Ferrara Ristorante.xlsx, Righe: 740, Righe Pulite: 722
+File: daPulire/La Spezia Ristorante.xlsx, Righe: 429, Righe Pulite: 408
+File: daPulire/Brindisi Ristorante.xlsx, Righe: 239, Righe Pulite: 231
+File: daPulire/Asti Ristorante.xlsx, Righe: 1147, Righe Pulite: 1083
+File: daPulire/Palermo Ristorante.xlsx, Righe: 658, Righe Pulite: 609
+File: daPulire/Benevento Ristorante.xlsx, Righe: 237, Righe Pulite: 226
+File: daPulire/Matera Ristorante.xlsx, Righe: 222, Righe Pulite: 204
+File: daPulire/Pesaro e Urbino Ristorante.xlsx, Righe: 518, Righe Pulite: 482
+File: daPulire/Biella Ristorante.xlsx, Righe: 1201, Righe Pulite: 1090
+File: daPulire/Chieti Ristorante.xlsx, Righe: 621, Righe Pulite: 609
+File: daPulire/Cremona Ristorante.xlsx, Righe: 645, Righe Pulite: 623
+File: daPulire/Brescia Ristorante.xlsx, Righe: 2437, Righe Pulite: 2366
+File: daPulire/Arezzo Ristorante.xlsx, Righe: 820, Righe Pulite: 789
+File: daPulire/Catania Ristorante.xlsx, Righe: 551, Righe Pulite: 524
+File: daPulire/Sondrio Ristorante.xlsx, Righe: 948, Righe Pulite: 912
+File: daPulire/Lecco Ristorante.xlsx, Righe: 613, Righe Pulite: 563
+File: daPulire/Udine Ristorante.xlsx, Righe: 1764, Righe Pulite: 1698
+File: daPulire/Reggio Emilia Ristorante.xlsx, Righe: 764, Righe Pulite: 739
+File: daPulire/Pordenone Ristorante.xlsx, Righe: 1536, Righe Pulite: 1428
+File: daPulire/Prato Ristorante.xlsx, Righe: 475, Righe Pulite: 462
+File: daPulire/Treviso Ristorante.xlsx, Righe: 1776, Righe Pulite: 1715
+File: daPulire/Livorno Ristorante.xlsx, Righe: 452, Righe Pulite: 427
+File: daPulire/Barletta-Andria-Trani Ristorante.xlsx, Righe: 80, Righe Pulite: 72
+File: daPulire/Massa Carrara Ristorante.xlsx, Righe: 1457, Righe Pulite: 1400
+File: daPulire/Vercelli Ristorante.xlsx, Righe: 832, Righe Pulite: 789
+File: daPulire/Forlì Cesena Ristorante.xlsx, Righe: 1078, Righe Pulite: 1018
+File: daPulire/Cosenza Ristorante.xlsx, Righe: 849, Righe Pulite: 824
+File: daPulire/Lucca Ristorante.xlsx, Righe: 1507, Righe Pulite: 1471
+File: daPulire/Savona Ristorante.xlsx, Righe: 802, Righe Pulite: 759
+File: daPulire/Piacenza Ristorante.xlsx, Righe: 568, Righe Pulite: 514
+File: daPulire/Sassari Ristorante.xlsx, Righe: 492, Righe Pulite: 456
+File: daPulire/Cuneo Ristorante.xlsx, Righe: 1903, Righe Pulite: 1786
+File: daPulire/Foggia Ristorante.xlsx, Righe: 319, Righe Pulite: 302
+File: daPulire/Vibo Valentia Ristorante.xlsx, Righe: 95, Righe Pulite: 90
+File: daPulire/Pavia Ristorante.xlsx, Righe: 1598, Righe Pulite: 1501
+File: daPulire/Trento Ristorante.xlsx, Righe: 1918, Righe Pulite: 1810
+File: daPulire/Pistoia Ristorante.xlsx, Righe: 562, Righe Pulite: 548
+File: daPulire/Caltanissetta Ristorante.xlsx, Righe: 561, Righe Pulite: 547
+File: daPulire/Alessandria Ristorante.xlsx, Righe: 1329, Righe Pulite: 1268
+File: daPulire/Rimini Ristorante.xlsx, Righe: 991, Righe Pulite: 943
+File: daPulire/L'Aquila Ristorante.xlsx, Righe: 227, Righe Pulite: 213
+File: daPulire/Isernia Ristorante.xlsx, Righe: 203, Righe Pulite: 190
+File: daPulire/Mantova Ristorante.xlsx, Righe: 948, Righe Pulite: 814
+File: daPulire/Pescara Ristorante.xlsx, Righe: 628, Righe Pulite: 611
+File: daPulire/Reggio Calabria Ristorante.xlsx, Righe: 215, Righe Pulite: 196
+File: daPulire/Rovigo Ristorante.xlsx, Righe: 1067, Righe Pulite: 1045
+File: daPulire/Modena Ristorante.xlsx, Righe: 1450, Righe Pulite: 1388
+File: daPulire/Viterbo Ristorante.xlsx, Righe: 782, Righe Pulite: 741
+File: daPulire/Perugia Ristorante.xlsx, Righe: 1917, Righe Pulite: 1834
+File: daPulire/Belluno Ristorante.xlsx, Righe: 1216, Righe Pulite: 1168
+File: daPulire/Vicenza Ristorante.xlsx, Righe: 2573, Righe Pulite: 2409
+File: daPulire/Ascoli Piceno Ristorante.xlsx, Righe: 260, Righe Pulite: 244
+File: daPulire/Bergamo Ristorante.xlsx, Righe: 2087, Righe Pulite: 2002
+File: daPulire/Cagliari Ristorante.xlsx, Righe: 137, Righe Pulite: 130
+File: daPulire/Parma Ristorante.xlsx, Righe: 646, Righe Pulite: 628
+File: daPulire/Terni Ristorante.xlsx, Righe: 213, Righe Pulite: 203
+File: daPulire/Crotone Ristorante.xlsx, Righe: 50, Righe Pulite: 49
+File: daPulire/Trieste Ristorante.xlsx, Righe: 213, Righe Pulite: 192
+File: daPulire/Aosta Ristorante.xlsx, Righe: 1307, Righe Pulite: 1262
+File: daPulire/Imperia Ristorante.xlsx, Righe: 358, Righe Pulite: 329
+File: daPulire/Carbonia Ristorante.xlsx, Righe: 711, Righe Pulite: 694
+File: daPulire/Gorizia Ristorante.xlsx, Righe: 785, Righe Pulite: 776
+File: daPulire/Venezia Ristorante.xlsx, Righe: 715, Righe Pulite: 677
+File: daPulire/Messina Ristorante.xlsx, Righe: 810, Righe Pulite: 774
+File: daPulire/Siracusa Ristorante.xlsx, Righe: 220, Righe Pulite: 215
+File: daPulire/Roma Ristorante.xlsx, Righe: 2380, Righe Pulite: 2297
+File: daPulire/Lodi Ristorante.xlsx, Righe: 514, Righe Pulite: 490
+File: daPulire/Teramo Ristorante.xlsx, Righe: 386, Righe Pulite: 364
+File: daPulire/Taranto Ristorante.xlsx, Righe: 197, Righe Pulite: 179
+File: daPulire/Ragusa Ristorante.xlsx, Righe: 223, Righe Pulite: 207
+File: daPulire/Padova Ristorante.xlsx, Righe: 1574, Righe Pulite: 1505
+File: daPulire/Trapani Ristorante.xlsx, Righe: 617, Righe Pulite: 601
+File: daPulire/Ravenna Ristorante.xlsx, Righe: 470, Righe Pulite: 445
+File: daPulire/Enna Ristorante.xlsx, Righe: 99, Righe Pulite: 92
+File: daPulire/Nuoro Ristorante.xlsx, Righe: 163, Righe Pulite: 154
+File: daPulire/Monza-Brianza Ristorante.xlsx, Righe: 934, Righe Pulite: 870
+File: daPulire/Lecce Ristorante.xlsx, Righe: 979, Righe Pulite: 916
+File: daPulire/Novara Ristorante.xlsx, Righe: 1208, Righe Pulite: 1152
+File: daPulire/Grosseto Ristorante.xlsx, Righe: 1423, Righe Pulite: 1375
+File: daPulire/Genova Ristorante.xlsx, Righe: 695, Righe Pulite: 662
+File: daPulire/Varese Ristorante.xlsx, Righe: 1809, Righe Pulite: 1713
+File: daPulire/Avellino Ristorante.xlsx, Righe: 194, Righe Pulite: 173
+File: daPulire/Campobasso Ristorante.xlsx, Righe: 204, Righe Pulite: 186
+File: daPulire/Salerno Ristorante.xlsx, Righe: 1986, Righe Pulite: 1889
+File: daPulire/Oristano Ristorante.xlsx, Righe: 452, Righe Pulite: 431
+File: daPulire/Latina Ristorante.xlsx, Righe: 888, Righe Pulite: 861
+File: daPulire/Potenza Ristorante.xlsx, Righe: 241, Righe Pulite: 223
+File: daPulire/Como Ristorante.xlsx, Righe: 1423, Righe Pulite: 1367
+File: daPulire/Frosinone Ristorante.xlsx, Righe: 1026, Righe Pulite: 977
+File: daPulire/Ancona Ristorante.xlsx, Righe: 361, Righe Pulite: 342
+File: daPulire/Verbania Ristorante.xlsx, Righe: 1109, Righe Pulite: 1045
+File: daPulire/Siena Ristorante.xlsx, Righe: 1358, Righe Pulite: 1297
+File: daPulire/Agrigento Ristorante.xlsx, Righe: 288, Righe Pulite: 267
+File: daPulire/Fermo Ristorante.xlsx, Righe: 188, Righe Pulite: 181
+File: daPulire/Catanzaro Ristorante.xlsx, Righe: 563, Righe Pulite: 533
+File: daPulire/Ferrara Ristorante.xlsx, Righe: 740, Righe Pulite: 722
+File: daPulire/La Spezia Ristorante.xlsx, Righe: 429, Righe Pulite: 408
+File: daPulire/Brindisi Ristorante.xlsx, Righe: 239, Righe Pulite: 231
+File: daPulire/Asti Ristorante.xlsx, Righe: 1147, Righe Pulite: 1084
+File: daPulire/Palermo Ristorante.xlsx, Righe: 658, Righe Pulite: 609
+File: daPulire/Benevento Ristorante.xlsx, Righe: 237, Righe Pulite: 226
+File: daPulire/Matera Ristorante.xlsx, Righe: 222, Righe Pulite: 204
+File: daPulire/Pesaro e Urbino Ristorante.xlsx, Righe: 518, Righe Pulite: 482
+File: daPulire/Biella Ristorante.xlsx, Righe: 1201, Righe Pulite: 1090
+File: daPulire/Chieti Ristorante.xlsx, Righe: 621, Righe Pulite: 609
+File: daPulire/Cremona Ristorante.xlsx, Righe: 645, Righe Pulite: 623
+File: daPulire/Brescia Ristorante.xlsx, Righe: 2437, Righe Pulite: 2367
+File: daPulire/Arezzo Ristorante.xlsx, Righe: 820, Righe Pulite: 789
+File: daPulire/Catania Ristorante.xlsx, Righe: 551, Righe Pulite: 524
+File: daPulire/Sondrio Ristorante.xlsx, Righe: 948, Righe Pulite: 911
+File: daPulire/Lecco Ristorante.xlsx, Righe: 613, Righe Pulite: 560
+File: daPulire/Udine Ristorante.xlsx, Righe: 1764, Righe Pulite: 1698
+File: daPulire/Reggio Emilia Ristorante.xlsx, Righe: 764, Righe Pulite: 739
+File: daPulire/Pordenone Ristorante.xlsx, Righe: 1536, Righe Pulite: 1428
+File: daPulire/Prato Ristorante.xlsx, Righe: 475, Righe Pulite: 462
+File: daPulire/Treviso Ristorante.xlsx, Righe: 1776, Righe Pulite: 1715
+File: daPulire/Livorno Ristorante.xlsx, Righe: 452, Righe Pulite: 427
+File: daPulire/Barletta-Andria-Trani Ristorante.xlsx, Righe: 80, Righe Pulite: 72
+File: daPulire/Massa Carrara Ristorante.xlsx, Righe: 1457, Righe Pulite: 1400
+File: daPulire/Vercelli Ristorante.xlsx, Righe: 832, Righe Pulite: 789
+File: daPulire/Forlì Cesena Ristorante.xlsx, Righe: 1078, Righe Pulite: 1018
+File: daPulire/Cosenza Ristorante.xlsx, Righe: 849, Righe Pulite: 824
+File: daPulire/Lucca Ristorante.xlsx, Righe: 1507, Righe Pulite: 1470
+File: daPulire/Savona Ristorante.xlsx, Righe: 802, Righe Pulite: 759
+File: daPulire/Piacenza Ristorante.xlsx, Righe: 568, Righe Pulite: 514
+File: daPulire/Sassari Ristorante.xlsx, Righe: 492, Righe Pulite: 456
+File: daPulire/Cuneo Ristorante.xlsx, Righe: 1903, Righe Pulite: 1788
+File: daPulire/Foggia Ristorante.xlsx, Righe: 319, Righe Pulite: 302
+File: daPulire/Vibo Valentia Ristorante.xlsx, Righe: 95, Righe Pulite: 91
+File: daPulire/Pavia Ristorante.xlsx, Righe: 1598, Righe Pulite: 1501
+File: daPulire/Trento Ristorante.xlsx, Righe: 1918, Righe Pulite: 1810
+File: daPulire/Pistoia Ristorante.xlsx, Righe: 562, Righe Pulite: 548
+File: daPulire/Caltanissetta Ristorante.xlsx, Righe: 561, Righe Pulite: 547
+File: daPulire/Alessandria Ristorante.xlsx, Righe: 1329, Righe Pulite: 1268
+File: daPulire/Rimini Ristorante.xlsx, Righe: 991, Righe Pulite: 943
+File: daPulire/L'Aquila Ristorante.xlsx, Righe: 227, Righe Pulite: 213
+File: daPulire/Isernia Ristorante.xlsx, Righe: 203, Righe Pulite: 190
+File: daPulire/Mantova Ristorante.xlsx, Righe: 948, Righe Pulite: 814
+File: daPulire/Pescara Ristorante.xlsx, Righe: 628, Righe Pulite: 610
+File: daPulire/Reggio Calabria Ristorante.xlsx, Righe: 215, Righe Pulite: 195
+File: daPulire/Rovigo Ristorante.xlsx, Righe: 1067, Righe Pulite: 1045
+File: daPulire/Modena Ristorante.xlsx, Righe: 1450, Righe Pulite: 1388
+File: daPulire/Viterbo Ristorante.xlsx, Righe: 782, Righe Pulite: 742
+File: daPulire/Perugia Ristorante.xlsx, Righe: 1917, Righe Pulite: 1834
+File: daPulire/Belluno Ristorante.xlsx, Righe: 1216, Righe Pulite: 1170
+File: daPulire/Vicenza Ristorante.xlsx, Righe: 2573, Righe Pulite: 2411
+File: daPulire/Ascoli Piceno Ristorante.xlsx, Righe: 260, Righe Pulite: 243
+File: daPulire/Bergamo Ristorante.xlsx, Righe: 2087, Righe Pulite: 2002
+File: daPulire/Cagliari Ristorante.xlsx, Righe: 137, Righe Pulite: 130
+File: daPulire/Parma Ristorante.xlsx, Righe: 646, Righe Pulite: 629
+File: daPulire/Terni Ristorante.xlsx, Righe: 213, Righe Pulite: 203
+File: daPulire/Crotone Ristorante.xlsx, Righe: 50, Righe Pulite: 49
+File: daPulire/Trieste Ristorante.xlsx, Righe: 213, Righe Pulite: 192
+File: daPulire/Aosta Ristorante.xlsx, Righe: 1307, Righe Pulite: 1260
+File: daPulire/Imperia Ristorante.xlsx, Righe: 358, Righe Pulite: 329
+File: daPulire/Carbonia Ristorante.xlsx, Righe: 711, Righe Pulite: 694
+File: daPulire/Gorizia Ristorante.xlsx, Righe: 785, Righe Pulite: 776
+File: daPulire/Venezia Ristorante.xlsx, Righe: 715, Righe Pulite: 677
+File: daPulire/Messina Ristorante.xlsx, Righe: 810, Righe Pulite: 774
+File: daPulire/Siracusa Ristorante.xlsx, Righe: 220, Righe Pulite: 214
+File: daPulire/Roma Ristorante.xlsx, Righe: 2380, Righe Pulite: 2295
+File: daPulire/Lodi Ristorante.xlsx, Righe: 514, Righe Pulite: 490
+File: daPulire/Teramo Ristorante.xlsx, Righe: 386, Righe Pulite: 364
+File: daPulire/Taranto Ristorante.xlsx, Righe: 197, Righe Pulite: 179
+File: daPulire/Ragusa Ristorante.xlsx, Righe: 223, Righe Pulite: 207
+File: daPulire/Padova Ristorante.xlsx, Righe: 1574, Righe Pulite: 1506
+File: daPulire/Trapani Ristorante.xlsx, Righe: 617, Righe Pulite: 601
+File: daPulire/Ravenna Ristorante.xlsx, Righe: 470, Righe Pulite: 445
+File: daPulire/Enna Ristorante.xlsx, Righe: 99, Righe Pulite: 92
+File: daPulire/Nuoro Ristorante.xlsx, Righe: 163, Righe Pulite: 154
+File: daPulire/Monza-Brianza Ristorante.xlsx, Righe: 934, Righe Pulite: 871
+File: daPulire/Lecce Ristorante.xlsx, Righe: 979, Righe Pulite: 916
+File: daPulire/Novara Ristorante.xlsx, Righe: 1208, Righe Pulite: 1152
+File: daPulire/Grosseto Ristorante.xlsx, Righe: 1423, Righe Pulite: 1374
+File: daPulire/Genova Ristorante.xlsx, Righe: 695, Righe Pulite: 662
+File: daPulire/Varese Ristorante.xlsx, Righe: 1809, Righe Pulite: 1712
+File: daPulire/Avellino Ristorante.xlsx, Righe: 194, Righe Pulite: 174
+File: daPulire/Campobasso Ristorante.xlsx, Righe: 204, Righe Pulite: 186
+File: daPulire/Salerno Ristorante.xlsx, Righe: 1986, Righe Pulite: 1887
+File: daPulire/Oristano Ristorante.xlsx, Righe: 452, Righe Pulite: 431
+File: daPulire/Latina Ristorante.xlsx, Righe: 888, Righe Pulite: 860
+File: daPulire/Potenza Ristorante.xlsx, Righe: 241, Righe Pulite: 222
+File: daPulire/Como Ristorante.xlsx, Righe: 1423, Righe Pulite: 1367
+File: daPulire/all_data_Totale.xlsx, Righe: 25409, Righe Pulite: 25370
+File: daPulire/all_data_Totale.xlsx, Righe: 25409, Righe Pulite: 25370
+File: daPulire/all_data_Totale.xlsx, Righe: 25409, Righe Pulite: 25372

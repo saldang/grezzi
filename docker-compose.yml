@@ -11,26 +11,27 @@ services:
     networks:
       - 2_pg_network
 
-  nocodb: 
-    depends_on: 
-      root_db: 
+  nocodb:
+    depends_on:
+      root_db:
         condition: service_healthy
-    environment: 
+    environment:
       NC_DB: "pg://root_db:5432?u=postgres&p=password&d=root_db"
+      NC_REQUEST_BODY_SIZE: 504857600
     image: "nocodb/nocodb:latest"
-    ports: 
+    ports:
       - "8080:8080"
     restart: always
     networks:
       - 2_pg_network
-    volumes: 
+    volumes:
       - "nc_data:/usr/app/data"
-  root_db: 
-    environment: 
+  root_db:
+    environment:
       POSTGRES_DB: root_db
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
-    healthcheck: 
+    healthcheck:
       interval: 10s
       retries: 10
       test: "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""
@@ -39,9 +40,9 @@ services:
     restart: always
     networks:
       - 2_pg_network
-    volumes: 
+    volumes:
       - "db_data:/var/lib/postgresql/data"
-volumes: 
+volumes:
   db_data: {}
   nc_data: {}
 
