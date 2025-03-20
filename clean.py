@@ -5,8 +5,10 @@ import glob
 import os
 import requests
 import json
+import dotenv
 from datetime import datetime
 
+dotenv.load_dotenv(".env")
 
 def write_log(msg):
     with open("log.txt", "a") as f:
@@ -96,7 +98,7 @@ def parse_xls(file_path):
         df = df.rename(
             columns={
                 "Value": "Email",
-                "Phone2": "Cell",
+                "Phone2": "Phone",
                 "Name": "Name_or_Email",
                 "Source": "Website",
                 "Keywords": "Description",
@@ -112,26 +114,26 @@ def parse_xls(file_path):
                 "Unnamed: 15": "Category-II",
             }
         )
-    else:
-        df = df.rename(
-            columns={
-                "Valore": "Email",
-                "Telefono2": "Cell",
-                "Nome": "Name_or_Email",
-                "Fonte": "Website",
-                "Parole chiave": "Description",
-                "Titolo": "Name",
-                "META Description": "Meta Description",
-                "META Keywords": "Meta Keywords",
-                "Dominio": "Domain-1",
-                "Paese": "Domain",
-                "Cittа": "Country",
-                "Indirizzo": "City",
-                "Categoria": "Address",
-                "Unnamed: 14": "Category-I",
-                "Unnamed: 15": "Category-II",
-            }
-        )
+    # else:
+    #     df = df.rename(
+    #         columns={
+    #             "Valore": "Email",
+    #             "Telefono2": "Cell",
+    #             "Nome": "Name_or_Email",
+    #             "Fonte": "Website",
+    #             "Parole chiave": "Description",
+    #             "Titolo": "Name",
+    #             "META Description": "Meta Description",
+    #             "META Keywords": "Meta Keywords",
+    #             "Dominio": "Domain-1",
+    #             "Paese": "Domain",
+    #             "Cittа": "Country",
+    #             "Indirizzo": "City",
+    #             "Categoria": "Address",
+    #             "Unnamed: 14": "Category-I",
+    #             "Unnamed: 15": "Category-II",
+    #         }
+    #     )
     print(df.columns)
     print("Drop non italiani")
     df = df[df["Country"].str.lower() == "italy"]
@@ -255,20 +257,24 @@ if __name__ == "__main__":
     all_df["Province"] = all_df["Province"].str.upper()
     all_df["City"] = all_df["City"].str.capitalize()
     filename = "puliti/all_data" + datetime.now().strftime("%Y%m%d%H%M%S") + ".csv"
+
+    all_df.drop(columns=["Unnamed: 13","Unnamed: 16"])
     all_df.to_csv(filename, index=False)
 
+    TABLE_ID = os.getenv("TABLE_ID")
+    TOKEN = os.getenv("TOKEN")
     # Salvataggio in nocodb
-    NODODB_URL = "http://nocodb:8080"
+    NODODB_URL = f"http://nocodb:8080/api/v2/tables/{TABLE_ID}/records"
 
     # Inserimento all_df in nocodb
-    url = NODODB_URL + "/api/v2/tables/mlxrf5dy97q67s3/records"
+
 
     headers = {
         "Content-Type": "application/json",
-        "xc-token": "kzqB4bf28_8TIcM8P8bhhNqoxfyw6lEUBll-kksP",
+        "xc-token": TOKEN,
     }
 
     data = all_df.to_dict(orient="records")
-    response = requests.post(url, headers=headers, json=data)
+    response = requests.post(NODODB_URL, headers=headers, json=data)
     print(response.json())
     print(f"File salvato in nocodb: {filename}")
