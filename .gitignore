@@ -15,5 +15,6 @@ output_raw_csv
 *.xlsx
 
 .env
+
 file_log.txt
 log.txt
