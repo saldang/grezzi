@@ -14,5 +14,6 @@ output_csv
 output_raw_csv
 *.xlsx
 
-uv.lock
 .env
+file_log.txt
+log.txt
