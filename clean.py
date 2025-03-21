@@ -77,7 +77,7 @@ def split_city_cap(df):
         df["CAP"] = df["City"].str.extract(r"(\d{4,5})")
         df["CAP"] = df["CAP"].str.strip()
 
-        df["City"] = df["City"].str.replace(r"\s*\d{4,5}\s*", "", regex=True)
+        df["City"] = df["City"].str.replace(r"\d{4,5}\s*", "", regex=True)
         df["Province"] = pd.StringDtype()
         df["Province"] = df["City"].str.extract(r"\b([A-Z]{2})\b")
         df["Province"] = df["Province"].str.strip()
@@ -255,10 +255,13 @@ if __name__ == "__main__":
         lambda x: re.sub(r"\d{5}", "", x).strip()
     )
     all_df["Province"] = all_df["Province"].str.upper()
+    all_df["City"] = pd.StringDtype()
     all_df["City"] = all_df["City"].str.capitalize()
     filename = "puliti/all_data" + datetime.now().strftime("%Y%m%d%H%M%S") + ".csv"
-
-    all_df.drop(columns=["Unnamed: 13","Unnamed: 16"])
+    if "Unnamed: 13" in all_df.columns:
+        all_df.drop(columns=["Unnamed: 13"])
+    if "Unnamed: 16" in all_df.columns:
+        all_df.drop(columns=["Unnamed: 16"])
     all_df.to_csv(filename, index=False)
 
     TABLE_ID = os.getenv("TABLE_ID")
@@ -275,6 +278,7 @@ if __name__ == "__main__":
     }
 
     data = all_df.to_dict(orient="records")
+    print(data)
     response = requests.post(NODODB_URL, headers=headers, json=data)
     print(response.json())
     print(f"File salvato in nocodb: {filename}")
