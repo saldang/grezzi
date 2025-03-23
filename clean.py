@@ -74,15 +74,25 @@ def split_city_cap(df):
     """Separa la città dal CAP."""
     if "City" in df.columns:
         df["CAP"] = pd.StringDtype()
-        df["CAP"] = df["City"].str.extract(r"(\d{4,5})")
-        df["CAP"] = df["CAP"].str.strip()
-
-        df["City"] = df["City"].str.replace(r"\d{4,5}\s*", "", regex=True)
         df["Province"] = pd.StringDtype()
-        df["Province"] = df["City"].str.extract(r"\b([A-Z]{2})\b")
-        df["Province"] = df["Province"].str.strip()
-        df["City"] = df["City"].apply(remove_province)
-
+        for index, row in df.iterrows():
+            if isinstance(row["City"], str):
+                cap_match = re.search(r"(\d{4,5})", row["City"])
+                province_match = re.search(r"\b([A-Z]{2})\b", row["City"])
+                if province_match:
+                    df.at[index, "Province"] = province_match.group(1)
+                    df.at[index, "City"] = row["City"].replace(province_match.group(1), "").strip()
+                else:
+                    df.at[index, "Province"] = None
+                if cap_match:
+                    df.at[index, "CAP"] = cap_match.group(1)
+                    df.at[index, "City"] = row["City"].replace(cap_match.group(1), "").strip()
+                else:
+                    df.at[index, "CAP"] = None
+            else:
+                df.at[index, "CAP"] = None
+                df.at[index, "City"] = row["City"]
+                df.at[index, "Province"] = None
     return df
 
 
@@ -255,13 +265,15 @@ if __name__ == "__main__":
         lambda x: re.sub(r"\d{5}", "", x).strip()
     )
     all_df["Province"] = all_df["Province"].str.upper()
-    all_df["City"] = pd.StringDtype()
     all_df["City"] = all_df["City"].str.capitalize()
     filename = "puliti/all_data" + datetime.now().strftime("%Y%m%d%H%M%S") + ".csv"
     if "Unnamed: 13" in all_df.columns:
-        all_df.drop(columns=["Unnamed: 13"])
+        print("Droppata colonna Unnamed: 13")
+        all_df.drop(columns=["Unnamed: 13"], inplace=True)
     if "Unnamed: 16" in all_df.columns:
-        all_df.drop(columns=["Unnamed: 16"])
+        print("Droppata colonna Unnamed: 16")
+        all_df.drop(columns=["Unnamed: 16"], inplace=True)
+
     all_df.to_csv(filename, index=False)
 
     TABLE_ID = os.getenv("TABLE_ID")
@@ -278,7 +290,9 @@ if __name__ == "__main__":
     }
 
     data = all_df.to_dict(orient="records")
-    print(data)
+    with open("data.json", "w") as f:
+        json.dump(data, f, indent=4)
+
     response = requests.post(NODODB_URL, headers=headers, json=data)
     print(response.json())
     print(f"File salvato in nocodb: {filename}")
