@@ -124,26 +124,26 @@ def parse_xls(file_path):
                 "Unnamed: 15": "Category-II",
             }
         )
-    # else:
-    #     df = df.rename(
-    #         columns={
-    #             "Valore": "Email",
-    #             "Telefono2": "Cell",
-    #             "Nome": "Name_or_Email",
-    #             "Fonte": "Website",
-    #             "Parole chiave": "Description",
-    #             "Titolo": "Name",
-    #             "META Description": "Meta Description",
-    #             "META Keywords": "Meta Keywords",
-    #             "Dominio": "Domain-1",
-    #             "Paese": "Domain",
-    #             "Cittа": "Country",
-    #             "Indirizzo": "City",
-    #             "Categoria": "Address",
-    #             "Unnamed: 14": "Category-I",
-    #             "Unnamed: 15": "Category-II",
-    #         }
-    #     )
+    else:
+        df = df.rename(
+            columns={
+                "Valore": "Email",
+                "Telefono2": "Cell",
+                "Nome": "Name_or_Email",
+                "Fonte": "Website",
+                "Parole chiave": "Description",
+                "Titolo": "Name",
+                "META Description": "Meta Description",
+                "META Keywords": "Meta Keywords",
+                "Dominio": "Domain-1",
+                "Paese": "Domain",
+                "Cittа": "Country",
+                "Indirizzo": "City",
+                "Categoria": "Address",
+                "Unnamed: 14": "Category-I",
+                "Unnamed: 15": "Category-II",
+            }
+        )
     print(df.columns)
     print("Drop non italiani")
     df = df[df["Country"].str.lower() == "italy"]
@@ -290,8 +290,7 @@ if __name__ == "__main__":
     }
 
     data = all_df.to_dict(orient="records")
-    with open("data.json", "w") as f:
-        json.dump(data, f, indent=4)
+
 
     response = requests.post(NODODB_URL, headers=headers, json=data)
     print(response.json())
