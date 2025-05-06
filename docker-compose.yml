@@ -7,7 +7,7 @@ services:
       - .:/app
     restart: always
     networks:
-      - 2_pg_network
+      - caddy
 
   nocodb:
     depends_on:
@@ -21,7 +21,7 @@ services:
       - "8080:8080"
     restart: always
     networks:
-      - 2_pg_network
+      - caddy
     volumes:
       - "nc_data:/usr/app/data"
   root_db:
@@ -37,7 +37,7 @@ services:
     image: postgres:16.6
     restart: always
     networks:
-      - 2_pg_network
+      - caddy
     volumes:
       - "db_data:/var/lib/postgresql/data"
 volumes:
@@ -45,4 +45,5 @@ volumes:
   nc_data: {}
 
 networks:
-  2_pg_network:
+  caddy:
+    external: true
