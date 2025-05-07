@@ -3,10 +3,10 @@ import re
 import socket
 import glob
 import os
-import requests
 import json
 import dotenv
 from datetime import datetime
+from . import db
 
 dotenv.load_dotenv(".env")
 
@@ -204,7 +204,7 @@ def save_files(file_paths):
 
 
 # Funzione per verificare e aggiornare la City
-def verify_and_update_city(row):
+def verify_and_update_city(row, cap_dict):
     cap = row["CAP"]
     city = row["City"]
     correct_city = cap_dict.get(cap)
@@ -224,10 +224,9 @@ def verify_and_update_cap(row):
     return cap
 
 
-if __name__ == "__main__":
+def clean_data(table_id):
     file_list = glob.glob("daPulire/*.xlsx")
     save_files(file_list)
-
     with open("file_log.txt", "r") as f:
         count = 0
         lines = f.readlines()
@@ -259,14 +258,14 @@ if __name__ == "__main__":
     cap_comune = cap_df.set_index("cap")["comune"].to_dict()
 
     # Applica la funzione al DataFrame
-    all_df["City"] = all_df.apply(verify_and_update_city, axis=1)
+    all_df["City"] = all_df.apply(verify_and_update_city, axis=1, args=(cap_dict,))
     all_df["CAP"] = all_df.apply(verify_and_update_cap, axis=1)
     all_df["Address"] = all_df["Address"].apply(
         lambda x: re.sub(r"\d{5}", "", x).strip()
     )
     all_df["Province"] = all_df["Province"].str.upper()
     all_df["City"] = all_df["City"].str.capitalize()
-    filename = "puliti/all_data" + datetime.now().strftime("%Y%m%d%H%M%S") + ".csv"
+    filename = "puliti/all_data_" + datetime.now().strftime("%Y%m%d_%H%M%S") + ".csv"
     if "Unnamed: 13" in all_df.columns:
         print("Droppata colonna Unnamed: 13")
         all_df.drop(columns=["Unnamed: 13"], inplace=True)
@@ -275,23 +274,5 @@ if __name__ == "__main__":
         all_df.drop(columns=["Unnamed: 16"], inplace=True)
 
     all_df.to_csv(filename, index=False)
-
-    TABLE_ID = os.getenv("TABLE_ID")
-    TOKEN = os.getenv("TOKEN")
-    # Salvataggio in nocodb
-    NODODB_URL = f"http://nocodb:8080/api/v2/tables/{TABLE_ID}/records"
-
-    # Inserimento all_df in nocodb
-
-
-    headers = {
-        "Content-Type": "application/json",
-        "xc-token": TOKEN,
-    }
-
-    data = all_df.to_dict(orient="records")
-
-
-    response = requests.post(NODODB_URL, headers=headers, json=data)
-    print(response.json())
-    print(f"File salvato in nocodb: {filename}")
+    print(f"File salvato: {filename}")
+    db.save_to_table(table_id, all_df)

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException, WebSocket
+from fastapi import FastAPI, File, UploadFile, HTTPException, WebSocket, Form
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi_socketio import SocketManager
 from typing import List
@@ -9,8 +9,9 @@ from threading import Thread
 import asyncio
 from jinja2 import Environment, FileSystemLoader
 import logging
-
-
+from .db import get_bases, get_all_tables, create_table
+import jsonify
+from pydantic import BaseModel
 # Creazione dell'applicazione FastAPI
 app = FastAPI()
 sio = SocketManager(app=app)
@@ -36,6 +37,10 @@ env = Environment(loader=FileSystemLoader("templates"))
 # Lista di connessioni WebSocket attive
 active_connections = set()
 
+class TableCreateRequest(BaseModel):
+    base_id: str
+    table_name: str
+
 
 async def notify_clients():
     """Invia un messaggio a tutti i client connessi per ricaricare la pagina"""
@@ -46,15 +51,14 @@ async def notify_clients():
             pass  # Ignora eventuali errori
 
 
-def execute_script_in_background():
-    """Esegue lo script e notifica i client WebSocket al termine"""
+def execute_script_in_background(table_id):
+    """Esegue la funzione di pulizia e notifica i client WebSocket al termine"""
     try:
-        script_path = os.path.join(os.getcwd(), "clean.py")
-        if os.path.exists(script_path):
-            subprocess.run(["python", script_path])  # Esegui lo script
+        from .clean import clean_data  # importa la funzione da un modulo Python
+        clean_data(table_id)  # esegui la funzione direttamente
         asyncio.run(notify_clients())  # Notifica i client WebSocket
     except Exception as e:
-        print(f"Errore nell'esecuzione dello script: {str(e)}")
+        print(f"Errore nell'esecuzione della funzione di pulizia: {str(e)}")
 
 
 @app.websocket("/ws")
@@ -78,7 +82,8 @@ async def get_root():
 
 
 @app.post("/upload")
-async def upload_files(files: List[UploadFile] = File(...)):
+async def upload_files(table_id: str = Form(...), files: List[UploadFile] = File(...)):
+    print(files, table_id)
     try:
 
         for file in files:
@@ -91,7 +96,7 @@ async def upload_files(files: List[UploadFile] = File(...)):
             logging.info(f"File {file.filename} saved successfully")
 
         # Avvia lo script in background
-        Thread(target=execute_script_in_background, daemon=True).start()
+        Thread(target=execute_script_in_background, daemon=True, args=(table_id,)).start()
         # Redirect alla pagina che mostra l'elenco dei file
         logging.info("Redirecting to /list_files")
         return {"status": "processing", "redirect": "/list_files"}
@@ -174,3 +179,29 @@ async def clear_output():
             status_code=500,
             detail=f"Errore durante la pulizia della cartella: {str(e)}",
         )
+
+@app.get("/tables/{base_id}")
+def get_tables(base_id: str):
+    """Recupera tutte le tabelle da NocoDB."""
+    tables = get_all_tables(base_id)
+    if tables:
+        return tables
+    else:
+        raise HTTPException(status_code=404, detail="Nessuna tabella trovata")
+
+
+@app.get("/bases")
+def get_nc_bases():
+    """Recupera tutte le basi da NocoDB."""
+    bases = get_bases()
+    if bases:
+        return bases
+    else:
+        raise HTTPException(status_code=404, detail="Nessuna base trovata")
+
+@app.post("/create_table")
+def nc_create_table(table_create_request: TableCreateRequest):
+    create_table(table_create_request.base_id, table_create_request.table_name)
+    return {"success": True, "message": "Tabella creata con successo"}
+
+

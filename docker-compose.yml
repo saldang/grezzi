@@ -3,8 +3,8 @@ services:
     build: .
     ports:
       - "8000:8000"
-    # volumes:
-    #   - .:/app
+    volumes:
+      - .:/app
     restart: always
     networks:
       - caddy
@@ -32,7 +32,7 @@ services:
     healthcheck:
       interval: 10s
       retries: 10
-      test: "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""
+      test: 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"'
       timeout: 2s
     image: postgres:16.6
     restart: always
