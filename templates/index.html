@@ -76,6 +76,32 @@
     <div class="container mt-5">
         <h1 class="text-center mb-4">Carica File</h1>
 
+        <!-- Dropdown per selezionare una base -->
+        <div class="mb-3">
+            <label for="baseSelect" class="form-label">Seleziona una base:</label>
+            <select id="baseSelect" class="form-select">
+                <option value="" disabled selected>Caricamento basi...</option>
+            </select>
+        </div>
+
+        <!-- Dropdown per selezionare una tabella -->
+        <div class="mb-3">
+            <label for="tableSelect" class="form-label">Seleziona una tabella:</label>
+            <select id="tableSelect" class="form-select" disabled>
+                <option value="" disabled selected>Seleziona una base prima...</option>
+            </select>
+        </div>
+
+        <!-- Form per creare una nuova tabella -->
+        <div class="mb-3">
+            <label for="newTableName" class="form-label">Crea nuova tabella:</label>
+            <div class="input-group">
+                <input type="text" id="newTableName" class="form-control" placeholder="Nome nuova tabella" />
+                <button class="btn btn-success" id="createTableButton" type="button">Crea</button>
+            </div>
+            <div id="createTableFeedback" class="form-text text-danger mt-1" style="display:none;"></div>
+        </div>
+
         <div class="upload-zone" id="dropZone">
             <input type="file" id="fileInput" multiple style="display: none">
             <i class="fa-solid fa-cloud-upload-alt fa-4x mb-3"></i>
@@ -87,8 +113,6 @@
         <button id="uploadButton" class="btn btn-primary mt-3" disabled>Carica File</button>
         <button id="listFilesButton" class="btn btn-secondary mt-3" onclick="window.location.href='/list_files'">Vai
             alla lista dei file</button>
-
-
     </div>
 
     <!-- Spinner di loading -->
@@ -104,6 +128,67 @@
         const fileList = document.getElementById('fileList');
         const uploadButton = document.getElementById('uploadButton');
         const loadingOverlay = document.getElementById('loadingOverlay');
+        const baseSelect = document.getElementById('baseSelect');
+        const tableSelect = document.getElementById('tableSelect');
+
+        // Funzione per recuperare le basi dall'endpoint
+        async function fetchBases() {
+            try {
+                const response = await fetch('/bases', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }); // Cambia l'endpoint se necessario
+                if (!response.ok) throw new Error('Errore durante il recupero delle basi');
+
+                const bases = await response.json();
+                console.log(bases);
+                baseSelect.innerHTML = '<option value="" disabled selected>Seleziona una base</option>';
+                bases.forEach(base => {
+                    console.log(base);
+                    const option = document.createElement('option');
+                    option.value = base.id; // Assumi che l'oggetto abbia una proprietà "id"
+                    option.textContent = base.title; // Assumi che l'oggetto abbia una proprietà "title"
+                    baseSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Errore:', error);
+                baseSelect.innerHTML = '<option value="" disabled>Errore nel caricamento delle basi</option>';
+            }
+        }
+
+        // Funzione per recuperare le tabelle in base alla base selezionata
+        async function fetchTables(baseId) {
+            try {
+                const response = await fetch(`/tables/${baseId}`); // Cambia l'endpoint se necessario
+                if (!response.ok) throw new Error('Errore durante il recupero delle tabelle');
+
+                const tables = await response.json();
+                tableSelect.innerHTML = '<option value="" disabled selected>Seleziona una tabella</option>';
+                tables.forEach(table => {
+                    console.log(table);
+                    const option = document.createElement('option');
+                    option.value = table.id; // Assumi che l'oggetto abbia una proprietà "id"
+                    option.textContent = table.title; // Assumi che l'oggetto abbia una proprietà "title"
+                    tableSelect.appendChild(option);
+                });
+                tableSelect.disabled = false;
+            } catch (error) {
+                console.error('Errore:', error);
+                tableSelect.innerHTML = '<option value="" disabled>Errore nel caricamento delle tabelle</option>';
+                tableSelect.disabled = true;
+            }
+        }
+
+        // Evento per popolare le tabelle quando una base viene selezionata
+        baseSelect.addEventListener('change', (event) => {
+            const baseId = event.target.value;
+            fetchTables(baseId);
+        });
+
+        // Chiama la funzione per popolare il dropdown delle basi al caricamento della pagina
+        document.addEventListener('DOMContentLoaded', fetchBases);
 
         // Evento per apertura selezione file al click sulla zona
         dropZone.addEventListener('click', () => fileInput.click());
@@ -151,6 +236,8 @@
                 formData.append('files', file);
             }
 
+            formData.append('table_id', tableSelect.value); // Aggiungi l'ID della tabella selezionata
+
             try {
                 const response = await fetch('/upload', {
                     method: 'POST',
@@ -175,6 +262,55 @@
         }
 
         uploadButton.addEventListener('click', uploadFiles);
+        // --- Script per la creazione di una nuova tabella ---
+        const createTableButton = document.getElementById('createTableButton');
+        const newTableName = document.getElementById('newTableName');
+        const createTableFeedback = document.getElementById('createTableFeedback');
+
+        createTableButton.addEventListener('click', async () => {
+            const baseId = baseSelect.value;
+            const tableName = newTableName.value.trim();
+            createTableFeedback.style.display = 'none';
+
+            if (!baseId) {
+                createTableFeedback.textContent = "Seleziona una base.";
+                createTableFeedback.style.display = 'block';
+                return;
+            }
+
+            if (!tableName) {
+                createTableFeedback.textContent = "Inserisci un nome valido per la tabella.";
+                createTableFeedback.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/create_table`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ base_id: baseId, table_name: tableName })
+                });
+
+                if (!response.ok) throw new Error("Errore durante la creazione della tabella");
+
+                const result = await response.json();
+                if (result.success) {
+                    console.log("Tabella creata con successo, ricarico...");
+                    await fetchTables(baseId); // opzionale se ricarichi
+                    newTableName.value = '';
+                    location.reload();
+                } else {
+                    createTableFeedback.textContent = result.message || "Errore generico.";
+                    createTableFeedback.style.display = 'block';
+                }
+            } catch (error) {
+                console.error(error);
+                createTableFeedback.textContent = "Errore durante la richiesta.";
+                createTableFeedback.style.display = 'block';
+            }
+        });
     </script>
 </body>
 
