@@ -1,6 +1,8 @@
 services:
   web:
     build: .
+    environment:
+      - TOKEN={TOKEN}
     ports:
       - "8081:8000"
     # volumes:
