@@ -144,11 +144,7 @@ def get_bases():
         return None
 
 if __name__ == "__main__":
-    print(get_bases())
-    for base_id, base_name in get_bases().items():
-        print(f"Base ID: {base_id}, Base Name: {base_name}")
-        get_all_tables(base_id)
-        table_name = "horeca"
-        create_table(base_id, table_name)
-        get_all_tables(base_id)
-
+    bases = get_bases()
+    if bases: 
+        for base_id, base_name in bases:
+            print(base_id, base_name)
