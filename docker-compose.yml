@@ -2,9 +2,9 @@ services:
   web:
     build: .
     ports:
-      - "8000:8000"
-    volumes:
-      - .:/app
+      - "8081:8000"
+    # volumes:
+    #   - .:/app
     restart: always
     networks:
       - caddy
