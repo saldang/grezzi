@@ -11,5 +11,6 @@ WORKDIR /app
 RUN uv sync --frozen --no-cache
 # Expose the application port.
 EXPOSE 8000
+
 # Run the application.
 CMD ["uv","run","fastapi", "dev", "--host", "0.0.0.0", "--port", "8000"]
