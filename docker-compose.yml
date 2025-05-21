@@ -1,7 +1,8 @@
 services:
   web:
     build: .
-    env_file: .env
+    environment:
+      - TOKEN=${TOKEN}
     ports:
       - "8081:8000"
     # volumes:
@@ -14,8 +15,10 @@ services:
     depends_on:
       root_db:
         condition: service_healthy
-    env_file: .env
     environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
       NC_DB: "pg://root_db:5432?u={POSTGRES_USER}&p={POSTGRES_PASSWORD}&d={POSTGRES_DB}"
       NC_REQUEST_BODY_SIZE: 504857600
     image: "nocodb/nocodb:latest"
@@ -27,7 +30,9 @@ services:
     volumes:
       - "nc_data:/usr/app/data"
   root_db:
-    env_file: .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
     healthcheck:
       interval: 10s
       retries: 10
