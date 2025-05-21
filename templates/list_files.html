@@ -80,6 +80,10 @@
 
 <body>
     <div class="container">
+        <form action="/logout" method="get">
+            <input type="submit" class="btn btn-outline-danger float-end" value="Logout">
+        </form>
+        <div class="clearfix mb-3"></div>
         {% if files %}
         <h1 class="text-center mb-4">File nella cartella:</h1>
         <div class="file-list">
