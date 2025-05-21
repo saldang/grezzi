@@ -19,6 +19,8 @@ from passlib.hash import bcrypt
 from sqlalchemy.orm import Session
 from fastapi import Cookie
 from typing import Optional
+from dotenv import load_dotenv
+
 
 # Creazione dell'applicazione FastAPI
 app = FastAPI()
@@ -26,7 +28,7 @@ sio = SocketManager(app=app)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
-
+load_dotenv()
 
 # Definizione della cartella per gli upload
 UPLOAD_FOLDER = "daPulire"
@@ -78,7 +80,7 @@ def get_db():
 def create_user():
     users = os.environ["CLEAN_USERS"]
     if users:
-        users = users.split(";")
+        users = users.split("|")
         for user in users:
             username, password = user.split(":")
             db = SessionLocal()
@@ -166,6 +168,7 @@ async def get_root(request: Request, session: Optional[str] = Cookie(None)):
 # Login page GET
 @app.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request):
+    create_user()  # Crea l'utente se non esiste
     return templates.TemplateResponse("login.html", {"request": request})
 
 
