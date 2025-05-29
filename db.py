@@ -17,6 +17,7 @@ headers = {
     "xc-token": TOKEN,
 }
 
+
 def save_to_nocodb(all_df, filename):
     """Salva il DataFrame in NocoDB."""
     # Converti il DataFrame in un dizionario
@@ -32,11 +33,14 @@ def save_to_table(table_id: str, all_df: pd.DataFrame):
     print(table_id, all_df.head())
     data = all_df.to_dict(orient="records")
     print(f"{NC_DATA_URL}/{table_id}/records")
-    response = requests.post(f"{NC_DATA_URL}/{table_id}/records", headers=headers, json=data)
+    response = requests.post(
+        f"{NC_DATA_URL}/{table_id}/records", headers=headers, json=data
+    )
     if response.status_code == 200:
         print(f"File salvato in NocoDB: {table_id}")
     else:
         print(f"Errore nel salvataggio in NocoDB: {response.status_code}")
+
 
 def get_all_tables(base_id):
     """Recupera tutte le tabelle da NocoDB."""
@@ -49,6 +53,7 @@ def get_all_tables(base_id):
         print(f"Errore nel recupero delle tabelle: {response.status_code}")
         return None
 
+
 def get_table(table_id):
     """Recupera una tabella specifica da NocoDB."""
     response = requests.get(f"{NC_DATA_URL}/{table_id}", headers=headers)
@@ -58,7 +63,8 @@ def get_table(table_id):
         print(f"Errore nel recupero della tabella: {response.status_code}")
         return None
 
-def create_table(base_id,table_name):
+
+def create_table(base_id, table_name):
     """Crea una nuova tabella in NocoDB."""
     CREATE_TABLE_URL = f"{NC_META_URL}/bases/{base_id}/tables"
     data = {
@@ -66,58 +72,81 @@ def create_table(base_id,table_name):
         "table_name": table_name,
         "columns": [
             {
-                "title":"Email",
-                "uidt":"Email",
+                "title": "ID",
+                "uidt": "ID",
+                "pv": True,
             },
             {
-                "title":"Cell",
-                "uidt":"PhoneNumber",
+                "title": "Created At",
+                "uidt": "CreatedTime",
             },
             {
-                "title":"Name_or_Email",
-                "uidt":"SingleLineText",
+                "title": "Updated At",
+                "uidt": "UpdatedTime",
             },
             {
-                "title":"Website",
-                "uidt":"URL",
+                "title": "Source",
+                "uidt": "SingleLineText",
             },
             {
-                "title":"Description",
-                "uidt":"LongText",
+                "title": "Email",
+                "uidt": "Email",
             },
             {
-                "title":"Name",
-                "uidt":"SingleLineText",
+                "title": "Cell",
+                "uidt": "PhoneNumber",
             },
             {
-                "title":"Meta Description",
-                "uidt":"SingleLineText",
+                "title": "Name_or_Email",
+                "uidt": "SingleLineText",
             },
             {
-                "title":"Meta Keywords",
-                "uidt":"SingleLineText",
+                "title": "Website",
+                "uidt": "URL",
             },
             {
-                "title":"Domain-1",
-                "uidt":"URL",
-            },{
-                "title":"Domain",
-                "uidt":"URL",
-            },{
-                "title":"Country",
-                "uidt":"SingleLineText",
-            },{
-                "title":"City",
-                "uidt":"SingleLineText",
-            },{
-                "title":"Address",
-                "uidt":"SingleLineText",
-            },{
-                "title":"Category-I",
-                "uidt":"SingleLineText",
-            },{
-                "title":"Category-II",
-                "uidt":"SingleLineText",
+                "title": "Description",
+                "uidt": "LongText",
+            },
+            {
+                "title": "Name",
+                "uidt": "SingleLineText",
+            },
+            {
+                "title": "Meta Description",
+                "uidt": "SingleLineText",
+            },
+            {
+                "title": "Meta Keywords",
+                "uidt": "SingleLineText",
+            },
+            {
+                "title": "Domain-1",
+                "uidt": "URL",
+            },
+            {
+                "title": "Domain",
+                "uidt": "URL",
+            },
+            {
+                "title": "Country",
+                "uidt": "SingleLineText",
+            },
+            {
+                "title": "City",
+                "uidt": "SingleLineText",
+            },
+            {
+                "title": "Address",
+                "uidt": "SingleLineText",
+            },
+            {
+                "title": "Category-I",
+                "uidt": "SingleLineText",
+            },
+            {
+                "title": "Category-II",
+                "uidt": "SingleLineText",
             },
         ],
     }
@@ -126,6 +155,7 @@ def create_table(base_id,table_name):
         print(f"Tabella creata: {table_name}")
     else:
         print(f"Errore nella creazione della tabella: {response.status_code}")
+
 
 def get_bases():
     """Recupera tutte le basi da NocoDB."""
@@ -136,15 +166,16 @@ def get_bases():
         ids = []
         if bases:
             for base in bases:
-                ids.append({"id":base["id"], "title": base["title"]})
+                ids.append({"id": base["id"], "title": base["title"]})
             print(f"Basi trovate: {ids}")
         return ids
     else:
         print(f"Errore nel recupero delle basi: {response.status_code}")
         return None
 
+
 if __name__ == "__main__":
     bases = get_bases()
-    if bases: 
+    if bases:
         for base_id, base_name in bases:
             print(base_id, base_name)
