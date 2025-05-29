@@ -72,17 +72,18 @@ def create_table(base_id, table_name):
         "table_name": table_name,
         "columns": [
             {
-                "title": "ID",
+                "title": "id",
                 "uidt": "ID",
-                "pv": True,
+                "pk": True,
+                "ai": True,
             },
             {
-                "title": "Created At",
+                "title": "CreatedAt",
                 "uidt": "CreatedTime",
             },
             {
-                "title": "Updated At",
-                "uidt": "UpdatedTime",
+                "title": "UpdatedAt",
+                "uidt": "LastModifiedTime",
             },
             {
                 "title": "Source",
@@ -154,7 +155,7 @@ def create_table(base_id, table_name):
     if response.status_code == 200:
         print(f"Tabella creata: {table_name}")
     else:
-        print(f"Errore nella creazione della tabella: {response.status_code}")
+        print(f"Errore nella creazione della tabella: {response.content}")
 
 
 def get_bases():
