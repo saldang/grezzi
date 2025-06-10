@@ -1,3 +1,4 @@
+from datetime import datetime
 from fastapi import FastAPI, File, UploadFile, HTTPException, WebSocket, Form, status
 from fastapi import Request, Depends
 from fastapi.responses import HTMLResponse, FileResponse, RedirectResponse, Response
@@ -79,6 +80,11 @@ def get_db():
 # Funzione per creare un utente
 def create_user():
     users = os.environ["CLEAN_USERS"]
+    created: bool = bool(os.environ.get("USERS_CREATED", "False").lower())
+    if created:
+        logging.info("Utenti già creati.")
+        return
+    logging.info("Creazione degli utenti...")
     if users:
         users = users.split("|")
         for user in users:
@@ -93,6 +99,9 @@ def create_user():
                 db.commit()
                 logging.info("Utente creato.")
             db.close()
+        created = True
+        os.environ["USERS_CREATED"] = "True"
+        logging.info("Utenti creati con successo.")
 
 
 def get_current_user(
@@ -124,12 +133,12 @@ async def notify_clients():
             logging.error(f"Errore durante l'invio del messaggio: {str(e)}")
 
 
-def execute_script_in_background(table_id):
+def execute_script_in_background(table_id, filename):
     """Esegue la funzione di pulizia e notifica i client WebSocket al termine"""
     try:
         from .clean import clean_data  # importa la funzione da un modulo Python
 
-        clean_data(table_id)  # esegui la funzione direttamente
+        clean_data(table_id, filename)  # esegui la funzione direttamente
         asyncio.run(notify_clients())  # Notifica i client WebSocket
     except Exception as e:
         print(f"Errore nell'esecuzione della funzione di pulizia: {str(e)}")
@@ -195,19 +204,26 @@ async def upload_files(table_id: str = Form(...), files: List[UploadFile] = File
     print(files, table_id)
     try:
 
+        Path(UPLOAD_FOLDER).mkdir(parents=True, exist_ok=True)
         for file in files:
-            file_path = os.path.join(UPLOAD_FOLDER, file.filename)
-            logging.info(f"Saving file to {file_path}")
+            if file.filename is not None:
+                file_path = os.path.join(
+                    UPLOAD_FOLDER,
+                    file.filename,
+                )
+                logging.info(f"Saving file to {file_path}")
 
             with open(file_path, "wb") as f:
                 while chunk := await file.read(1024 * 1024):
                     f.write(chunk)
             logging.info(f"File {file.filename} saved successfully")
 
-        # Avvia lo script in background
-        Thread(
-            target=execute_script_in_background, daemon=True, args=(table_id,)
-        ).start()
+            # Avvia lo script in background
+            Thread(
+                target=execute_script_in_background,
+                daemon=True,
+                args=(table_id, file.filename),
+            ).start()
         # Redirect alla pagina che mostra l'elenco dei file
         logging.info("Redirecting to /list_files")
         return {"status": "processing", "redirect": "/list_files"}

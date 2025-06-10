@@ -10,6 +10,7 @@ from . import db
 
 dotenv.load_dotenv(".env")
 
+
 def write_log(msg):
     with open("log.txt", "a") as f:
         f.write(msg + "\n")
@@ -63,12 +64,14 @@ def extract_domain(url):
         else:
             return url
 
+
 def remove_province(city):
     """Rimuove la provincia dalla città."""
     try:
         return re.sub(r"\b[A-Z]{2}\b", "", city).strip()
     except Exception as e:
         return city
+
 
 def split_city_cap(df):
     """Separa la città dal CAP."""
@@ -81,12 +84,16 @@ def split_city_cap(df):
                 province_match = re.search(r"\b([A-Z]{2})\b", row["City"])
                 if province_match:
                     df.at[index, "Province"] = province_match.group(1)
-                    df.at[index, "City"] = row["City"].replace(province_match.group(1), "").strip()
+                    df.at[index, "City"] = (
+                        row["City"].replace(province_match.group(1), "").strip()
+                    )
                 else:
                     df.at[index, "Province"] = None
                 if cap_match:
                     df.at[index, "CAP"] = cap_match.group(1)
-                    df.at[index, "City"] = row["City"].replace(cap_match.group(1), "").strip()
+                    df.at[index, "City"] = (
+                        row["City"].replace(cap_match.group(1), "").strip()
+                    )
                 else:
                     df.at[index, "CAP"] = None
             else:
@@ -173,34 +180,35 @@ def parse_xls(file_path):
     return df
 
 
-def save_files(file_paths):
+def save_files(filename):
     """Salva il CSV non ripulito e il CSV ripulito."""
     try:
         os.mkdir("output_csv")
         os.mkdir("output_raw_csv")
     except FileExistsError:
         pass
-    for f in file_paths:
-        df = parse_xls(f)
-        df_cleaned = df.dropna(subset=["Email Valida", "Dominio Raggiungibile"])
-        df_cleaned = df_cleaned[
-            df_cleaned["Email Valida"] & df_cleaned["Dominio Raggiungibile"]
-        ]
-        raw_entries = len(df)
-        raw_output_path = os.path.join(
-            "output_raw_csv", os.path.basename(f.replace(".xlsx", "_raw.csv"))
-        )
-        df.to_csv(raw_output_path, index=False)
-        cleaned_entries = len(df_cleaned)
-        clean_output_path = os.path.join(
-            "output_csv", os.path.basename(f.replace(".xlsx", "_cleaned.csv"))
-        )
-        df_cleaned.to_csv(clean_output_path, index=False)
-        print(f"File: {f}, Righe: {raw_entries}, Righe Pulite: {cleaned_entries}")
-        print(
-            f"File: {f}, Righe: {raw_entries}, Righe Pulite: {cleaned_entries}",
-            file=open("file_log.txt", "a"),
-        )
+    # for f in file_paths:
+    df = parse_xls(filename)
+    df_cleaned = df.dropna(subset=["Email Valida", "Dominio Raggiungibile"])
+    df_cleaned = df_cleaned[
+        df_cleaned["Email Valida"] & df_cleaned["Dominio Raggiungibile"]
+    ]
+    raw_entries = len(df)
+    raw_output_path = os.path.join(
+        "output_raw_csv", os.path.basename(filename.replace(".xlsx", "_raw.csv"))
+    )
+    df.to_csv(raw_output_path, index=False)
+    cleaned_entries = len(df_cleaned)
+    clean_output_path = os.path.join(
+        "output_csv", os.path.basename(filename.replace(".xlsx", "_cleaned.csv"))
+    )
+    df_cleaned.to_csv(clean_output_path, index=False)
+    print(f"File: {filename}, Righe: {raw_entries}, Righe Pulite: {cleaned_entries}")
+    print(
+        f"File: {filename}, Righe: {raw_entries}, Righe Pulite: {cleaned_entries}",
+        file=open("file_log.txt", "a"),
+    )
+    return clean_output_path
 
 
 # Funzione per verificare e aggiornare la City
@@ -224,9 +232,10 @@ def verify_and_update_cap(row):
     return cap
 
 
-def clean_data(table_id):
-    file_list = glob.glob("daPulire/*.xlsx")
-    save_files(file_list)
+def clean_data(table_id, filename):
+    # file_list = glob.glob(upload_path+"/*.xlsx")
+    file_path = "./daPulire/" + filename
+    clean_output_path = save_files(file_path)
     with open("file_log.txt", "r") as f:
         count = 0
         lines = f.readlines()
@@ -235,20 +244,20 @@ def clean_data(table_id):
             new = line.split(",")[2].split(":")[1].strip()
             count = count + (int(old) - int(new))
         print(f"Righe totali rimosse: {count}")
-    for f in file_list:
-        os.remove(f)
-    file_list = glob.glob("./output_csv/*.csv")
-    all_data = []
-    for f in file_list:
-        df = pd.read_csv(f, engine="python", encoding="utf-8", dtype=str)
-        all_data.append(df)
-    all_df = pd.concat(all_data, ignore_index=True)
+    # for f in file_list:
+    os.remove(file_path)
+    # file_list = glob.glob("./output_csv/*.csv")
+    # all_data = []
+    # for f in file_list:
+    df = pd.read_csv(clean_output_path, engine="python", encoding="utf-8", dtype=str)
+    # all_data.append(df)
+    # all_df = pd.concat(all_data, ignore_index=True)
 
-    for columns in all_df.columns:
-        all_df[columns] = all_df[columns].fillna("")
-    all_df = all_df.astype(str)
-    all_df["Category"] = all_df["Category-I"] + all_df["Category-II"]
-    all_df = all_df.drop(columns=["Category-I", "Category-II"])
+    for columns in df.columns:
+        df[columns] = df[columns].fillna("")
+    df = df.astype(str)
+    df["Category"] = df["Category-I"] + df["Category-II"]
+    df = df.drop(columns=["Category-I", "Category-II"])
 
     cap_df = pd.read_csv(
         "gi_comuni_cap.csv", sep=";", engine="python", encoding="utf-8", dtype=str
@@ -258,21 +267,24 @@ def clean_data(table_id):
     cap_comune = cap_df.set_index("cap")["comune"].to_dict()
 
     # Applica la funzione al DataFrame
-    all_df["City"] = all_df.apply(verify_and_update_city, axis=1, args=(cap_dict,))
-    all_df["CAP"] = all_df.apply(verify_and_update_cap, axis=1)
-    all_df["Address"] = all_df["Address"].apply(
-        lambda x: re.sub(r"\d{5}", "", x).strip()
+    df["City"] = df.apply(verify_and_update_city, axis=1, args=(cap_dict,))
+    df["CAP"] = df.apply(verify_and_update_cap, axis=1)
+    df["Address"] = df["Address"].apply(lambda x: re.sub(r"\d{5}", "", x).strip())
+    df["Province"] = df["Province"].str.upper()
+    df["City"] = df["City"].str.capitalize()
+    filename = (
+        "puliti/"
+        + filename.replace(".xlsx", "_clean_")
+        + datetime.now().strftime("%Y%m%d_%H%M%S")
+        + ".csv"
     )
-    all_df["Province"] = all_df["Province"].str.upper()
-    all_df["City"] = all_df["City"].str.capitalize()
-    filename = "puliti/all_data_" + datetime.now().strftime("%Y%m%d_%H%M%S") + ".csv"
-    if "Unnamed: 13" in all_df.columns:
+    if "Unnamed: 13" in df.columns:
         print("Droppata colonna Unnamed: 13")
-        all_df.drop(columns=["Unnamed: 13"], inplace=True)
-    if "Unnamed: 16" in all_df.columns:
+        df.drop(columns=["Unnamed: 13"], inplace=True)
+    if "Unnamed: 16" in df.columns:
         print("Droppata colonna Unnamed: 16")
-        all_df.drop(columns=["Unnamed: 16"], inplace=True)
+        df.drop(columns=["Unnamed: 16"], inplace=True)
 
-    all_df.to_csv(filename, index=False)
+    df.to_csv(filename, index=False)
     print(f"File salvato: {filename}")
-    db.save_to_table(table_id, all_df)
+    db.save_to_table(table_id, df)

@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const socket = new WebSocket("ws://localhost:8000/ws");
+            const socket = new WebSocket("ws://localhost:8081/ws");
 
             socket.onopen = () => console.log("WebSocket connessa!");
 
