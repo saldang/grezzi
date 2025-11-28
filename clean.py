@@ -6,7 +6,10 @@ import os
 import json
 import dotenv
 from datetime import datetime
+import logging
 from . import db
+
+logger = logging.getLogger(__name__)
 
 dotenv.load_dotenv(".env")
 
@@ -18,6 +21,7 @@ def write_log(msg):
 
 def is_valid_email(email):
     """Verifica se l'email ha un formato valido."""
+    logger.info(f"Validating email: {email}")
     if pd.isnull(email) or pd.isna(email):
         return False
     else:
@@ -27,17 +31,20 @@ def is_valid_email(email):
 
 def is_domain_reachable(email):
     """Verifica se il dominio dell'email è raggiungibile tramite DNS."""
+    logger.info(f"Checking domain reachability for email: {email}")
     try:
         domain = email.split("@")[1]
         if socket.gethostbyname(domain):
             return True
     except Exception as e:
+        logger.error(f"DNS: Errore: {e}, Dominio: {domain}")
         write_log(f"DNS: Errore: {e}, Dominio: {domain}")
         return False
 
 
 def suggest_email_fix(email, common_domains=None):
     """Prova a correggere errori comuni nelle email."""
+    logger.info(f"Suggesting email fix for: {email}")
     if "@" not in email:
         return None
     username, domain = email.split("@", 1)
@@ -54,6 +61,7 @@ def suggest_email_fix(email, common_domains=None):
 
 def extract_domain(url):
     """Estrae la parte del dominio da un URL."""
+    logger.info(f"Extracting domain from URL: {url}")
     if pd.isnull(url) or pd.isna(url):
         return None
     else:
@@ -67,9 +75,11 @@ def extract_domain(url):
 
 def remove_province(city):
     """Rimuove la provincia dalla città."""
+    logger.info(f"Removing province from city: {city}")
     try:
         return re.sub(r"\b[A-Z]{2}\b", "", city).strip()
     except Exception as e:
+        logger.error(f"Error removing province from city: {city}, error: {e}")
         return city
 
 
@@ -109,8 +119,8 @@ def parse_xls(file_path):
         file_path,
         engine="openpyxl",
     )
-    print(file_path)
-    print("Normalizzazione colonne")
+    logger.info(f"Parsing file: {file_path}")
+    logger.info("Normalizzazione colonne")
     if "Value" in df.columns:
         df = df.rename(
             columns={
@@ -151,28 +161,28 @@ def parse_xls(file_path):
                 "Unnamed: 15": "Category-II",
             }
         )
-    print(df.columns)
-    print("Drop non italiani")
+    logger.info(f"Columns: {df.columns}")
+    logger.info("Drop non italiani")
     df = df[df["Country"].str.lower() == "italy"]
-    print("Split città e CAP")
+    logger.info("Split città e CAP")
     df = split_city_cap(df)
-    print("Normalizzazione email")
+    logger.info("Normalizzazione email")
     if "Email" not in df.columns:
         raise ValueError(f"Il file {file_path} non contiene una colonna 'Email'")
     df["Email"] = df["Email"].astype(str).str.strip().str.lower()
 
     # df["Email"] = df["Email"].strip().lower()
-    print("Estrazione dominio")
+    logger.info("Estrazione dominio")
     df["Domain-1"] = df["Domain"].apply(
         lambda x: extract_domain(x) if not pd.isnull(x) or pd.isna(x) else None
     )
-    print("Suggerimento email corretta")
+    logger.info("Suggerimento email corretta")
     df["Email Corretta"] = df["Email"].apply(
         lambda x: (suggest_email_fix(x, df["Domain-1"]) if not is_valid_email(x) else x)
     )
-    print("Verifica email")
+    logger.info("Verifica email")
     df["Email Valida"] = df["Email Corretta"].apply(lambda x: is_valid_email(x))
-    print("Verifica dominio raggiungibile")
+    logger.info("Verifica dominio raggiungibile")
     df["Dominio Raggiungibile"] = df["Email"].apply(
         lambda x: is_domain_reachable(x) if is_valid_email(x) else False
     )
@@ -203,11 +213,9 @@ def save_files(filename):
         "output_csv", os.path.basename(filename.replace(".xlsx", "_cleaned.csv"))
     )
     df_cleaned.to_csv(clean_output_path, index=False)
-    print(f"File: {filename}, Righe: {raw_entries}, Righe Pulite: {cleaned_entries}")
-    print(
-        f"File: {filename}, Righe: {raw_entries}, Righe Pulite: {cleaned_entries}",
-        file=open("file_log.txt", "a"),
-    )
+    logger.info(f"File: {filename}, Righe: {raw_entries}, Righe Pulite: {cleaned_entries}")
+    with open("file_log.txt", "a") as f:
+        f.write(f"File: {filename}, Righe: {raw_entries}, Righe Pulite: {cleaned_entries}\n")
     return clean_output_path
 
 
@@ -243,7 +251,7 @@ def clean_data(table_id, filename):
             old = line.split(",")[1].split(":")[1].strip()
             new = line.split(",")[2].split(":")[1].strip()
             count = count + (int(old) - int(new))
-        print(f"Righe totali rimosse: {count}")
+        logger.info(f"Righe totali rimosse: {count}")
     # for f in file_list:
     os.remove(file_path)
     # file_list = glob.glob("./output_csv/*.csv")
@@ -279,12 +287,12 @@ def clean_data(table_id, filename):
         + ".csv"
     )
     if "Unnamed: 13" in df.columns:
-        print("Droppata colonna Unnamed: 13")
+        logger.info("Droppata colonna Unnamed: 13")
         df.drop(columns=["Unnamed: 13"], inplace=True)
     if "Unnamed: 16" in df.columns:
-        print("Droppata colonna Unnamed: 16")
+        logger.info("Droppata colonna Unnamed: 16")
         df.drop(columns=["Unnamed: 16"], inplace=True)
 
     df.to_csv(filename, index=False)
-    print(f"File salvato: {filename}")
+    logger.info(f"File salvato: {filename}")
     db.save_to_table(table_id, df)

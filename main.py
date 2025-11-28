@@ -28,7 +28,9 @@ app = FastAPI()
 sio = SocketManager(app=app)
 
 # Configure logging
-logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+logging.basicConfig(filename="clean.log", level=logging.INFO)
 load_dotenv()
 
 # Definizione della cartella per gli upload
@@ -82,35 +84,37 @@ def create_user():
     users = os.environ["CLEAN_USERS"]
     created: bool = bool(os.environ.get("USERS_CREATED", "False").lower())
     if created:
-        logging.info("Utenti già creati.")
+        logger.info("Utenti già creati.")
         return
-    logging.info("Creazione degli utenti...")
+    logger.info("Creazione degli utenti...")
     if users:
         users = users.split("|")
         for user in users:
             username, password = user.split(":")
             db = SessionLocal()
             if db.query(User).filter_by(username=username).first():
-                logging.warning("Utente già esistente.")
+                logger.warning("Utente già esistente.")
             else:
                 hashed = bcrypt.hash(password)
                 user = User(username=username, password_hash=hashed)
                 db.add(user)
                 db.commit()
-                logging.info("Utente creato.")
+                logger.info("Utente creato.")
             db.close()
         created = True
         os.environ["USERS_CREATED"] = "True"
-        logging.info("Utenti creati con successo.")
+        logger.info("Utenti creati con successo.")
 
 
 def get_current_user(
     session: Optional[str] = Cookie(None), db: Session = Depends(get_db)
 ):
     if session is None:
+        logger.warning("Session cookie is missing.")
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     user = db.query(User).filter(User.username == session).first()
     if user is None:
+        logger.warning("Invalid session cookie.")
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     return user
 
@@ -128,20 +132,22 @@ async def notify_clients():
     """Invia un messaggio a tutti i client connessi per ricaricare la pagina"""
     for websocket in active_connections:
         try:
+            logger.info("Notifying a client about task completion.")
             await websocket.send_json({"event": "task_completed"})
         except Exception as e:
-            logging.error(f"Errore durante l'invio del messaggio: {str(e)}")
+            logger.error(f"Errore durante l'invio del messaggio: {str(e)}")
 
 
 def execute_script_in_background(table_id, filename):
     """Esegue la funzione di pulizia e notifica i client WebSocket al termine"""
     try:
+        logger.info(f"Starting cleaning process for file: {filename}, table_id: {table_id}")
         from .clean import clean_data  # importa la funzione da un modulo Python
 
         clean_data(table_id, filename)  # esegui la funzione direttamente
         asyncio.run(notify_clients())  # Notifica i client WebSocket
     except Exception as e:
-        print(f"Errore nell'esecuzione della funzione di pulizia: {str(e)}")
+        logger.error(f"Errore nell'esecuzione della funzione di pulizia: {str(e)}")
 
 
 @app.websocket("/ws")
@@ -153,7 +159,7 @@ async def websocket_endpoint(websocket: WebSocket):
         while True:
             await websocket.receive_text()  # Mantiene la connessione aperta
     except Exception as e:
-        logging.error(f"Errore nella connessione WebSocket: {str(e)}")
+        logger.error(f"Errore nella connessione WebSocket: {str(e)}")
     finally:
         active_connections.remove(websocket)
 
@@ -161,6 +167,7 @@ async def websocket_endpoint(websocket: WebSocket):
 # Route root: legge direttamente il cookie 'session', verifica utente, redirect se non valido
 @app.get("/", response_class=HTMLResponse)
 async def get_root(request: Request, session: Optional[str] = Cookie(None)):
+
     db = SessionLocal()
     try:
         if session is None:
@@ -177,6 +184,7 @@ async def get_root(request: Request, session: Optional[str] = Cookie(None)):
 # Login page GET
 @app.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request):
+    logger.info("Rendering login page")
     create_user()  # Crea l'utente se non esiste
     return templates.TemplateResponse("login.html", {"request": request})
 
@@ -189,6 +197,7 @@ async def login_post(
     password: str = Form(...),
     db: SessionLocal = Depends(get_db),
 ):
+    logger.info(f"Login attempt for user: {username}")
     user = db.query(User).filter(User.username == username).first()
     if user and bcrypt.verify(password, user.password_hash):
         response = RedirectResponse(url="/", status_code=302)
@@ -201,7 +210,7 @@ async def login_post(
 
 @app.post("/upload")
 async def upload_files(table_id: str = Form(...), files: List[UploadFile] = File(...)):
-    print(files, table_id)
+    logger.info(f"Uploading files for table_id: {table_id}")
     try:
 
         Path(UPLOAD_FOLDER).mkdir(parents=True, exist_ok=True)
@@ -211,12 +220,12 @@ async def upload_files(table_id: str = Form(...), files: List[UploadFile] = File
                     UPLOAD_FOLDER,
                     file.filename,
                 )
-                logging.info(f"Saving file to {file_path}")
+                logger.info(f"Saving file to {file_path}")
 
             with open(file_path, "wb") as f:
                 while chunk := await file.read(1024 * 1024):
                     f.write(chunk)
-            logging.info(f"File {file.filename} saved successfully")
+            logger.info(f"File {file.filename} saved successfully")
 
             # Avvia lo script in background
             Thread(
@@ -225,7 +234,7 @@ async def upload_files(table_id: str = Form(...), files: List[UploadFile] = File
                 args=(table_id, file.filename),
             ).start()
         # Redirect alla pagina che mostra l'elenco dei file
-        logging.info("Redirecting to /list_files")
+        logger.info("Redirecting to /list_files")
         return {"status": "processing", "redirect": "/list_files"}
     except Exception as e:
         raise HTTPException(
@@ -238,6 +247,7 @@ async def upload_files(table_id: str = Form(...), files: List[UploadFile] = File
 
 @app.get("/list_files", response_class=HTMLResponse)
 async def list_files():
+    logger.info("Listing files in output folder")
     try:
         files = [
             f
@@ -252,6 +262,7 @@ async def list_files():
         return template.render(files=files)
 
     except Exception as e:
+        logger.error(f"Errore durante la lettura dei file: {str(e)}")
         raise HTTPException(
             status_code=500, detail=f"Errore durante la lettura dei file: {str(e)}"
         )
@@ -259,6 +270,7 @@ async def list_files():
 
 @app.get("/download/{filename}", response_class=FileResponse)
 async def download_file(filename: str):
+    logger.info(f"Downloading file: {filename}")
     file_path = os.path.join(OUTPUT_FOLDER, filename)
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail="File non trovato")
@@ -272,15 +284,16 @@ async def download_file(filename: str):
 
 @app.post("/clear_puliti")
 async def clear_puliti():
+    logger.info("Clearing output folder")
     try:
         for filename in os.listdir(OUTPUT_FOLDER):
             file_path = os.path.join(OUTPUT_FOLDER, filename)
             if os.path.isfile(file_path):
                 os.unlink(file_path)
-        logging.info("Output folder cleared successfully")
+        logger.info("Output folder cleared successfully")
         return {"status": "success", "message": "Output folder cleared successfully"}
     except Exception as e:
-        logging.error(f"Error clearing output folder: {str(e)}")
+        logger.error(f"Error clearing output folder: {str(e)}")
         raise HTTPException(
             status_code=500,
             detail=f"Errore durante la pulizia della cartella: {str(e)}",
@@ -289,6 +302,7 @@ async def clear_puliti():
 
 @app.post("/clear_output")
 async def clear_output():
+    logger.info("Clearing output CSV folders")
     try:
         for filename in os.listdir(OUTPUT_CSV_FOLDER):
             file_path = os.path.join(OUTPUT_CSV_FOLDER, filename)
@@ -298,10 +312,10 @@ async def clear_output():
             file_path = os.path.join(OUTPUT_RAW_FOLDER, filename)
             if os.path.isfile(file_path):
                 os.unlink(file_path)
-        logging.info("Output folder cleared successfully")
+        logger.info("Output folder cleared successfully")
         return {"status": "success", "message": "Output folder cleared successfully"}
     except Exception as e:
-        logging.error(f"Error clearing output folder: {str(e)}")
+        logger.error(f"Error clearing output folder: {str(e)}")
         raise HTTPException(
             status_code=500,
             detail=f"Errore durante la pulizia della cartella: {str(e)}",
@@ -311,6 +325,7 @@ async def clear_output():
 @app.get("/tables/{base_id}")
 def get_tables(base_id: str):
     """Recupera tutte le tabelle da NocoDB."""
+    logger.info(f"Retrieving tables for base_id: {base_id}")
     tables = get_all_tables(base_id)
     if tables:
         return tables
@@ -321,6 +336,7 @@ def get_tables(base_id: str):
 @app.get("/bases")
 def get_nc_bases():
     """Recupera tutte le basi da NocoDB."""
+    logger.info("Retrieving bases")
     bases = get_bases()
     if bases:
         return bases
@@ -330,6 +346,8 @@ def get_nc_bases():
 
 @app.post("/create_table")
 def nc_create_table(table_create_request: TableCreateRequest):
+    """Crea una nuova tabella in NocoDB."""
+    logger.info(f"Creating table {table_create_request.table_name} in base {table_create_request.base_id}")
     create_table(table_create_request.base_id, table_create_request.table_name)
     return {"success": True, "message": "Tabella creata con successo"}
 

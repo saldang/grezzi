@@ -4,7 +4,7 @@ import pandas as pd
 from dotenv import load_dotenv
 
 load_dotenv()
-
+logger = logging.getLogger(__name__)
 # Carica le variabili d'ambiente
 TOKEN = os.getenv("TOKEN")
 
@@ -23,23 +23,23 @@ def save_to_nocodb(all_df, filename):
     # Converti il DataFrame in un dizionario
     data = all_df.to_dict(orient="records")
     response = requests.post(NC_DATA_URL, headers=headers, json=data)
-    print(response.json())
-    print(f"File salvato in nocodb: {filename}")
+    logger.info(response.json())
+    logger.info(f"File salvato in nocodb: {filename}")
 
 
 def save_to_table(table_id: str, all_df: pd.DataFrame):
     """Salva il DataFrame in una tabella specifica di NocoDB."""
     # Converti il DataFrame in un dizionario
-    print(table_id, all_df.head())
+    logger.info(f"{table_id} {all_df.head()}")
     data = all_df.to_dict(orient="records")
-    print(f"{NC_DATA_URL}/{table_id}/records")
+    logger.info(f"{NC_DATA_URL}/{table_id}/records")
     response = requests.post(
         f"{NC_DATA_URL}/{table_id}/records", headers=headers, json=data
     )
     if response.status_code == 200:
-        print(f"File salvato in NocoDB: {table_id}")
+        logger.info(f"File salvato in NocoDB: {table_id}")
     else:
-        print(f"Errore nel salvataggio in NocoDB: {response.status_code}")
+        logger.error(f"Errore nel salvataggio in NocoDB: {response.status_code}")
 
 
 def get_all_tables(base_id):
@@ -50,7 +50,7 @@ def get_all_tables(base_id):
 
         return tables
     else:
-        print(f"Errore nel recupero delle tabelle: {response.status_code}")
+        logger.error(f"Errore nel recupero delle tabelle: {response.status_code}")
         return None
 
 
@@ -60,7 +60,7 @@ def get_table(table_id):
     if response.status_code == 200:
         return response.json()
     else:
-        print(f"Errore nel recupero della tabella: {response.status_code}")
+        logger.error(f"Errore nel recupero della tabella: {response.status_code}")
         return None
 
 
@@ -153,9 +153,9 @@ def create_table(base_id, table_name):
     }
     response = requests.post(CREATE_TABLE_URL, headers=headers, json=data)
     if response.status_code == 200:
-        print(f"Tabella creata: {table_name}")
+        logger.info(f"Tabella creata: {table_name}")
     else:
-        print(f"Errore nella creazione della tabella: {response.content}")
+        logger.error(f"Errore nella creazione della tabella: {response.content}")
 
 
 def get_bases():
@@ -168,10 +168,10 @@ def get_bases():
         if bases:
             for base in bases:
                 ids.append({"id": base["id"], "title": base["title"]})
-            print(f"Basi trovate: {ids}")
+            logger.info(f"Basi trovate: {ids}")
         return ids
     else:
-        print(f"Errore nel recupero delle basi: {response.status_code}")
+        logger.error(f"Errore nel recupero delle basi: {response.status_code}")
         return None
 
 
@@ -179,4 +179,4 @@ if __name__ == "__main__":
     bases = get_bases()
     if bases:
         for base_id, base_name in bases:
-            print(base_id, base_name)
+            logger.info(f"{base_id} {base_name}")
