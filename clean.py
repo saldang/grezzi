@@ -162,6 +162,12 @@ def parse_xls(file_path):
                 "Unnamed: 15": "Category-II",
             }
         )
+
+    # Remove all unnamed columns
+    unnamed_cols = [col for col in df.columns if col.startswith('Unnamed:')]
+    if unnamed_cols:
+        logger.info(f"Dropping unnamed columns: {unnamed_cols}")
+        df.drop(columns=unnamed_cols, inplace=True)
     logger.info(f"Columns: {df.columns}")
     logger.info("Drop non italiani")
     df = df[df["Country"].str.lower() == "italy"]
@@ -292,13 +298,12 @@ def clean_data(table_id, filename):
         + datetime.now().strftime("%Y%m%d_%H%M%S")
         + ".csv"
     )
-    
-    if "Unnamed: 13" in df.columns:
-        logger.info("Droppata colonna Unnamed: 13")
-        df.drop(columns=["Unnamed: 13"], inplace=True)
-    if "Unnamed: 16" in df.columns:
-        logger.info("Droppata colonna Unnamed: 16")
-        df.drop(columns=["Unnamed: 16"], inplace=True)
+
+    # Remove all unnamed columns
+    unnamed_cols = [col for col in df.columns if col.startswith('Unnamed:')]
+    if unnamed_cols:
+        logger.info(f"Dropping unnamed columns: {unnamed_cols}")
+        df.drop(columns=unnamed_cols, inplace=True)
     logger.debug(f"Columns after dropping: {df.columns}")
     df.to_csv(filename, index=False)
     logger.info(f"File salvato: {filename}")

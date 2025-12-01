@@ -3,7 +3,7 @@ services:
     build: .
     env_file: .env
     ports:
-      - "8081:8000"
+      - "9081:8000"
     volumes:
       - .:/app
     restart: always
@@ -20,7 +20,7 @@ services:
       NC_REQUEST_BODY_SIZE: 504857600
     image: "nocodb/nocodb:latest"
     ports:
-      - "8080:8080"
+      - "9080:8080"
     restart: always
     networks:
       - caddy
