@@ -30,7 +30,7 @@ sio = SocketManager(app=app)
 # Configure logging
 logger = logging.getLogger(__name__)
 
-logging.basicConfig(filename="clean.log", level=logging.INFO)
+logging.basicConfig(level=logging.INFO)
 load_dotenv()
 
 # Definizione della cartella per gli upload
