@@ -169,6 +169,7 @@ def parse_xls(file_path):
         logger.info(f"Dropping unnamed columns: {unnamed_cols}")
         df.drop(columns=unnamed_cols, inplace=True)
     logger.info(f"Columns: {df.columns}")
+    logger.info(df.head())
     logger.info("Drop non italiani")
     df = df[df["Country"].str.lower() == "italy"]
     logger.info("Split città e CAP")
