@@ -30,7 +30,7 @@ sio = SocketManager(app=app)
 # Configure logging
 logger = logging.getLogger(__name__)
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO)
 load_dotenv()
 
 # Definizione della cartella per gli upload
@@ -84,9 +84,9 @@ def create_user():
     users = os.environ["CLEAN_USERS"]
     created: bool = bool(os.environ.get("USERS_CREATED", "False").lower())
     if created:
-        logger.info("Utenti già creati.")
+        # logger.info("Utenti già creati.")
         return
-    logger.info("Creazione degli utenti...")
+    # logger.info("Creazione degli utenti...")
     if users:
         users = users.split("|")
         for user in users:

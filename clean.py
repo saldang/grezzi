@@ -199,6 +199,8 @@ def save_files(filename):
         pass
     # for f in file_paths:
     df = parse_xls(filename)
+    logger.info("Pulizia dati")
+    logger.debug(f"Initial rows: {df.head()}")
     df_cleaned = df.dropna(subset=["Email Valida", "Dominio Raggiungibile"])
     df_cleaned = df_cleaned[
         df_cleaned["Email Valida"] & df_cleaned["Dominio Raggiungibile"]
@@ -292,7 +294,7 @@ def clean_data(table_id, filename):
     if "Unnamed: 16" in df.columns:
         logger.info("Droppata colonna Unnamed: 16")
         df.drop(columns=["Unnamed: 16"], inplace=True)
-
+    logger.debug(f"Columns after dropping: {df.columns}")
     df.to_csv(filename, index=False)
     logger.info(f"File salvato: {filename}")
     db.save_to_table(table_id, df)
