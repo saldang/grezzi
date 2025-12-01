@@ -171,7 +171,7 @@ def parse_xls(file_path):
     logger.info(f"Columns: {df.columns}")
     logger.info(df.shape)
     logger.info("Drop non italiani")
-    df = df[df["Country"].str.lower() == "italy"]
+    df = df[(df["Country"].str.lower() == "italy") & (df["Country"].str.strip() != "")]
     logger.info("Split città e CAP")
     df = split_city_cap(df)
     logger.info("Normalizzazione email")
