@@ -121,6 +121,7 @@ def parse_xls(file_path):
     )
     logger.info(f"Parsing file: {file_path}")
     logger.info("Normalizzazione colonne")
+
     if "Value" in df.columns:
         df = df.rename(
             columns={
@@ -272,6 +273,7 @@ def clean_data(table_id, filename):
     cap_df = pd.read_csv(
         "gi_comuni_cap.csv", sep=";", engine="python", encoding="utf-8", dtype=str
     )
+    logger.info("Loaded city and CAP data")
     cap_df["comune"] = cap_df["denominazione_ita"].str.lower()
     cap_dict = cap_df.set_index("cap")["denominazione_ita"].to_dict()
     cap_comune = cap_df.set_index("cap")["comune"].to_dict()
@@ -280,7 +282,9 @@ def clean_data(table_id, filename):
     df["City"] = df.apply(verify_and_update_city, axis=1, args=(cap_dict,))
     df["CAP"] = df.apply(verify_and_update_cap, axis=1)
     df["Address"] = df["Address"].apply(lambda x: re.sub(r"\d{5}", "", x).strip())
+    logger.info("Uppercase province")
     df["Province"] = df["Province"].str.upper()
+    logger.info("Capitalizing city names")
     df["City"] = df["City"].str.capitalize()
     filename = (
         "puliti/"
@@ -288,6 +292,7 @@ def clean_data(table_id, filename):
         + datetime.now().strftime("%Y%m%d_%H%M%S")
         + ".csv"
     )
+    
     if "Unnamed: 13" in df.columns:
         logger.info("Droppata colonna Unnamed: 13")
         df.drop(columns=["Unnamed: 13"], inplace=True)
