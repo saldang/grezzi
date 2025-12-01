@@ -169,7 +169,7 @@ def parse_xls(file_path):
         logger.info(f"Dropping unnamed columns: {unnamed_cols}")
         df.drop(columns=unnamed_cols, inplace=True)
     logger.info(f"Columns: {df.columns}")
-    logger.info(df.head())
+    logger.info(df.shape)
     logger.info("Drop non italiani")
     df = df[df["Country"].str.lower() == "italy"]
     logger.info("Split città e CAP")
@@ -291,8 +291,10 @@ def clean_data(table_id, filename):
     df["Address"] = df["Address"].apply(lambda x: re.sub(r"\d{5}", "", str(x)).strip())
     logger.info("Uppercase province")
     df["Province"] = df["Province"].astype(str).str.upper()
+
     logger.info("Capitalizing city names")
     df["City"] = df["City"].astype(str).str.capitalize()
+    logger.info(f"Shape before dropping unnamed columns: {df.shape}")
     filename = (
         "puliti/"
         + filename.replace(".xlsx", "_clean_")
@@ -307,5 +309,6 @@ def clean_data(table_id, filename):
         df.drop(columns=unnamed_cols, inplace=True)
     logger.debug(f"Columns after dropping: {df.columns}")
     df.to_csv(filename, index=False)
+    logger.info(f"Shape after dropping unnamed columns: {df.shape}")
     logger.info(f"File salvato: {filename}")
     db.save_to_table(table_id, df)
