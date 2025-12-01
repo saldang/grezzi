@@ -287,11 +287,11 @@ def clean_data(table_id, filename):
     # Applica la funzione al DataFrame
     df["City"] = df.apply(verify_and_update_city, axis=1, args=(cap_dict,))
     df["CAP"] = df.apply(verify_and_update_cap, axis=1)
-    df["Address"] = df["Address"].apply(lambda x: re.sub(r"\d{5}", "", x).strip())
+    df["Address"] = df["Address"].apply(lambda x: re.sub(r"\d{5}", "", str(x)).strip())
     logger.info("Uppercase province")
-    df["Province"] = df["Province"].str.upper()
+    df["Province"] = df["Province"].astype(str).str.upper()
     logger.info("Capitalizing city names")
-    df["City"] = df["City"].str.capitalize()
+    df["City"] = df["City"].astype(str).str.capitalize()
     filename = (
         "puliti/"
         + filename.replace(".xlsx", "_clean_")
